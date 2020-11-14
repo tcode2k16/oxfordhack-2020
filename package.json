@@ -1,0 +1,38 @@
+{
+  "name": "oxfordhack-2020",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "frontend:dev": "npx webpack --progress --watch --config webpack.config.js",
+    "frontend:build": "npx webpack --progress --config webpack.config.js",
+    "backend:dev": "cd backend; flask run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tcode2k16/oxfordhack-2020.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tcode2k16/oxfordhack-2020/issues"
+  },
+  "homepage": "https://github.com/tcode2k16/oxfordhack-2020#readme",
+  "dependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.2.1",
+    "copy-webpack-plugin": "^6.3.1",
+    "html-webpack-plugin": "^4.5.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.1.0",
+    "nodemon": "^2.0.6",
+    "vue": "^2.6.12",
+    "vue-loader": "^15.9.5",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
