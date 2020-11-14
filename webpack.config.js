@@ -4,6 +4,7 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
 // Specifically to import globals for Less
@@ -42,6 +43,8 @@ module.exports = {
       {
         test: /\.less$/,
         use: ['vue-style-loader',
+          MiniCssExtractPlugin,
+
           'css-loader',
           'less-loader',
           {
@@ -77,11 +80,12 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-      {
-        from: 'frontend/static',
-        to: ''
-      }
-    ]}),
+        {
+          from: 'frontend/static',
+          to: ''
+        }
+      ]
+    }),
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       title: packagejson.name,
@@ -94,6 +98,9 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       "APPLICATION_NAME": JSON.stringify(packagejson.full_name),
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css"
     }),
   ],
   resolve: {
