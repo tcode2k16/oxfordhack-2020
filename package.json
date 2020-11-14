@@ -6,7 +6,7 @@
   "scripts": {
     "frontend:dev": "npx webpack --progress --watch --config webpack.config.js",
     "frontend:build": "npx webpack --progress --config webpack.config.js",
-    "backend:dev": "cd backend; flask run"
+    "backend:dev": "cd backend; FLASK_ENV=development flask run"
   },
   "repository": {
     "type": "git",
