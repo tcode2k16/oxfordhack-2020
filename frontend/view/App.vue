@@ -22,7 +22,12 @@ export default {
     display: grid;
     grid-template-columns: 2.3fr 9.7fr;
     column-gap: 50px;
-    min-height: 100vh;
+    height: 100vh;
+
+}
+
+#router {
+  overflow: scroll;
 }
 </style>
 

@@ -36,6 +36,8 @@ export default {
 .root {
   // background-color: red;
   color: #9E9E9E;
+  max-height: 100vh;
+  // position: absolute;
   // display: flex;
   // flex-direction: column;
   // justify-content: center;
