@@ -19,12 +19,19 @@
         <label for="fname">Gender</label>
         <div id="gender-btns">
           <input type="radio" id="male" name="gender" value="male" />
-          <label for="male">Male</label><br />
+          <label for="male">Male</label>
+          <br />
           <input type="radio" id="female" name="gender" value="female" />
-          <label for="female">Female</label><br />
+          <label for="female">Female</label>
+          <br />
           <input type="radio" id="Non-binary" name="gender" value="Non-binary" />
           <label for="Non-binary">Non-binary</label>
-          <input type="radio" id="Prefer not to disclose" name="gender" value="Prefer not to disclose" />
+          <input
+            type="radio"
+            id="Prefer not to disclose"
+            name="gender"
+            value="Prefer not to disclose"
+          />
           <label for="Prefer not to disclose">Prefer not to disclose</label>
         </div>
         <!-- <input type="text" id="fname" name="fname" /> -->
@@ -38,7 +45,7 @@
         <br />
 
         <div id="buttons">
-          <img src="/img/human2.svg" alt="" />
+          <img src="/img/human2.svg" alt />
           <button>Log out</button>
           <button>Update</button>
         </div>
@@ -52,8 +59,8 @@ import PageTitle from "../components/PageTitle";
 export default {
   name: "User",
   components: {
-    "page-title": PageTitle,
-  },
+    "page-title": PageTitle
+  }
 };
 </script>
 
@@ -93,7 +100,7 @@ label {
 }
 
 input {
-  background: #EEEEEE;
+  background: #eeeeee;
   border-radius: 5px;
   outline: none;
   border: none;
@@ -122,8 +129,8 @@ input {
 
 #buttons > button {
   margin-left: 20px;
-  background-color: #428FEA;
-  color: #FFFFFF;
+  background-color: #428fea;
+  color: #ffffff;
   border: none;
 
   font-family: Roboto;
@@ -134,6 +141,8 @@ input {
   padding: 10px;
   border-radius: 5px;
   height: fit-content;
+
+  cursor: pointer;
 }
 
 #gender-btns {
@@ -156,7 +165,7 @@ input {
   padding: 10px;
   border-radius: 5px; */
 
-  background: #EEEEEE;
+  background: #eeeeee;
   border-radius: 5px;
   outline: none;
   border: none;
@@ -173,16 +182,16 @@ input {
 }
 
 .selected {
-  background-color: #428FEA !important;
-  color: #FFFFFF;
+  background-color: #428fea !important;
+  color: #ffffff;
 }
 
 input[type="radio"] {
   display: none;
 }
-input[type="radio"]+label {
+input[type="radio"] + label {
   user-select: none;
-  background: #EEEEEE;
+  background: #eeeeee;
   border-radius: 5px;
   outline: none;
   border: none;
@@ -199,10 +208,8 @@ input[type="radio"]+label {
   padding-left: 5px;
   padding-right: 5px;
 }
-input[type="radio"]:checked+label{
-  background-color: #428FEA !important;
-  color: #FFFFFF;
-  
-} 
-
+input[type="radio"]:checked + label {
+  background-color: #428fea !important;
+  color: #ffffff;
+}
 </style>

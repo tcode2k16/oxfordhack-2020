@@ -13,14 +13,14 @@
 import PageTitle from "../components/PageTitle";
 export default {
   name: "Card",
-  props: ["title", "subtitle", "content"],
+  props: ["title", "subtitle", "content", "slotDirection"]
 };
 </script>
 
 <style scoped>
 .card-root {
-  background: #E9F0F8;
-  border: 1px solid #428FEA;
+  background: #e9f0f8;
+  border: 1px solid #428fea;
   box-sizing: border-box;
   border-radius: 5px;
   padding: 10px 20px;
