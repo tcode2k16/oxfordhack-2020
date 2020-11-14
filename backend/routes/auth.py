@@ -39,13 +39,8 @@ def register():
 # User Login
 @app.route('/auth/login', methods=['POST'])
 def login():
-<<<<<<< HEAD
   if request.json == None or not all([x in request.json for x in ['email', 'password']]):
     return jsonify({'error': 'missing login info'})
-=======
-  if request.json == None:
-    return jsonify({'error': 'no data'})
->>>>>>> 564547ef21bfe09b35c6976a501102c0aff0444f
   email = request.json['email']
   password = request.json['password']
 
