@@ -17,7 +17,7 @@ module.exports = {
     'index': path.join(__dirname, 'frontend', 'index.js')
   },
   output: {
-    path: path.resolve(__dirname, 'static'),
+    path: path.resolve(__dirname, 'build'),
     publicPath: '/'
   },
   devtool: 'source-map',

@@ -1,5 +1,5 @@
 backend/__pycache__
 node_modules
-static
+build
 *.sqlite
 *.pyc

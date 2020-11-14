@@ -20,8 +20,8 @@ export default {
 <style scoped>
 #app {
     display: grid;
-    grid-template-columns: 2.5fr 9.5fr;
-    column-gap: 10px;
+    grid-template-columns: 2.3fr 9.7fr;
+    column-gap: 50px;
     min-height: 100vh;
 }
 </style>
