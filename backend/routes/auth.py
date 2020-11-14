@@ -117,6 +117,9 @@ def my_feed():
 #1. publish hangout
 @app.route('/auth/publish', methods=['POST'])
 def publish():
+  if session['user_id'] == None:
+    return jsonify({'error': 'not logged in'})
+
   if request.json == None or not all([x in request.json for x in ['time','location','activity','cond_name','cond_college','cond_department','cond_gender','cond_year']]):
     return jsonify({'error': 'missing info'})
   
@@ -143,6 +146,9 @@ def publish():
 # 2. take a hangout
 @app.route('/auth/take')
 def take():
+  if session['user_id'] == None:
+    return jsonify({'error': 'not logged in'})
+
   if request.json == None or not all([x in request.json for x in ['hid']]):
     return jsonify({'error': 'missing info'})
 
@@ -167,6 +173,9 @@ def take():
 # 3.1 the author accepts a matched handout
 @app.route('/auth/accept')
 def accept():
+  if session['user_id'] == None:
+    return jsonify({'error': 'not logged in'})
+
   if request.json == None or not all([x in request.json for x in ['hid']]):
     return jsonify({'error': 'missing info'})
 
@@ -182,12 +191,15 @@ def accept():
 
   h.status = 'finalized'
   db.session.commit()
-  print('accepted hangout:', h.id)
+  print('accept hangout:', h.id)
   return jsonify({'status': 'succeed'})
 
 # 3.2 the author declines a matched handout
 @app.route('/auth/decline')
 def decline():
+  if session['user_id'] == None:
+    return jsonify({'error': 'not logged in'})
+    
   if request.json == None or not all([x in request.json for x in ['hid']]):
     return jsonify({'error': 'missing info'})
 
@@ -204,7 +216,7 @@ def decline():
   #put the hangout back into available stage
   h.status = 'available'
   db.session.commit()
-  print('declined hangout:', h.id)
+  print('decline hangout:', h.id)
   return jsonify({'status': 'succeed'})
 
 # 4 refresh the whole hangout database by a time, changing some 'finalized' to 'finished'
