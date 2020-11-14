@@ -4,8 +4,8 @@
       <router-link
         v-for="[route, name] in [
           ['/', 'Home'],
-          ['/hangouts', 'Hangouts'],
           ['/find-hangouts', 'Find Hangouts'],
+          ['/hangouts', 'Hangouts'],
           ['/user', 'User'],
         ]"
         :key="route"
@@ -36,7 +36,8 @@ export default {
 .root {
   // background-color: red;
   color: #9E9E9E;
-  max-height: 100vh;
+  min-height: 100vh;
+
   // position: absolute;
   // display: flex;
   // flex-direction: column;
@@ -51,6 +52,7 @@ export default {
   margin-bottom: 0;
   align-self: flex-end;
   width: 256px;
+  z-index: -100;
 }
 
 .link-box {
