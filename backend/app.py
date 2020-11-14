@@ -14,14 +14,14 @@ class User(db.Model):
   password = db.Column(db.String(500), nullable=False)
   
   # personal info
-  name = db.Column(db.String(100), nullable=False)
-  college = db.Column(db.String(100), nullable=False)
-  department = db.Column(db.String(100), nullable=False)
-  email = db.Column(db.String(100), nullable=False)
+  name = db.Column(db.String(500), nullable=False)
+  college = db.Column(db.String(500), nullable=False)
+  department = db.Column(db.String(500), nullable=False)
+  email = db.Column(db.String(500), nullable=False)
   year = db.Column(db.Integer, nullable=False)
-  phone_number = db.Column(db.String(100), nullable=False)
-  gender = db.Column(db.String(100), nullable=False)
-  pronouns = db.Column(db.String(100), nullable=False)
+  phone_number = db.Column(db.String(500), nullable=False)
+  gender = db.Column(db.String(500), nullable=False)
+  pronouns = db.Column(db.String(500), nullable=False)
   description = db.Column(db.String(500), nullable=False)
 
   def __repr__(self):
