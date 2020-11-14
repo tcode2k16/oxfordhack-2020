@@ -38,6 +38,8 @@ class Hangout(db.Model):
   author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
   participant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+
+# IMPORTANT: SINGLE CHOICE
   #hard condition
   cond_name = db.Column(db.String(500), nullable=False) # *
   cond_college = db.Column(db.String(500), nullable=False) # *

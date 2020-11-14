@@ -15,6 +15,11 @@ def register():
   if request.json == None or not all([x in request.json for x in ['name','college','department','email','year','phone_number','gender','pronouns','description','password']]):
     return jsonify({'error': 'missing info'})
   
+  # if already registered
+  user = User.query.filter_by(email=request.json['email']).first()
+  if user != None:
+    return jsonify({'error': 'this email has already been registered'})
+
   u = User(
     name=request.json['name'],
     college=request.json['college'],
@@ -32,7 +37,7 @@ def register():
   db.session.add(u)
   db.session.commit()
 
-  print("the id of new user:", u.id)
+  print("new user:", u.id)
 
   session['user_id'] = u.id
 
@@ -52,7 +57,8 @@ def login():
     return jsonify({'error': 'no user found'})
     
   
-  if not bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
+  # if not bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
+  if password != user.password:
     return jsonify({'error': 'wrong password'})
   
   session['user_id'] = user.id
@@ -63,9 +69,16 @@ def logout():
   session.pop('user_id', None)
   return redirect("/")
 
+
 #get all (available/matched/finalized/finished) hangouts I posted
 @app.route('/auth/my_hangouts')
 def my_hangouts():
+  if session['user_id'] == None:
+    return jsonify({'error': 'not logged in'})
+
+  if request.json == None or not all([x in request.json for x in ['hangout_type']]):
+    return jsonify({'error': 'missing info'})
+
   hangout_type = request.json['hangout_type']
   uid = session['user_id']
   hangouts = Hangouts.query.filter_by(author_id = uid, status = hangout_type).all() + Hangouts.query.filter_by(participant_id = uid, status = hangout_type).all()
@@ -74,9 +87,12 @@ def my_hangouts():
 #get all available hangouts that fit me
 @app.route('/auth/my_feed')
 def my_feed():
+  if session['user_id'] == None:
+    return jsonify({'error': 'not logged in'})
+
   #retrive key user info
   uid = session['user_id']
-  user = User.query.filter_by(id=uid, status = 'available').first()
+  user = User.query.filter_by(id=uid).first()
   name = user.name
   college = user.college
   department = user.department
@@ -87,12 +103,13 @@ def my_feed():
   hangouts = Hangouts.query.all()
   feeds = []
   for hangout in hangouts:
-    if name == hangout.cond_name and \
-       college == hangout.cond_college and \
-       department == hangout.department and \
-       year == hangout.year and \
-       gender == hangout.gender:
-       feeds.append(hangout)
+    if hangout.status == 'available':
+      if (name == hangout.cond_name or hangout.cond_name == '*') and \
+         (college == hangout.cond_college or hangout.cond_college == '*') and \
+         (department == hangout.department or hangout.cond_department == '*') and \
+         (year == hangout.year or houngout.cond_year == 0) and \
+         (gender == hangout.gender or hangout.cond_gender == '*'):
+        feeds.append(hangout)
 
   return jsonify({'feeds': feeds})
 
@@ -114,7 +131,8 @@ def publish():
     cond_gender=request.json['cond_gender'],
     cond_year=request.json['cond_year'],
     status='available',
-    author_id=uid
+    author_id=uid,
+    participant_id=0
   )
   db.session.add(h)
   db.session.commit()
@@ -188,3 +206,8 @@ def decline():
   db.session.commit()
   print('declined hangout:', h.id)
   return jsonify({'status': 'succeed'})
+
+# 4 refresh the whole hangout database by a time, changing some 'finalized' to 'finished'
+# @app.route('/auth/finish')
+# def finish():
+
