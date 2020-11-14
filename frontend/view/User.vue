@@ -1,6 +1,6 @@
 <template>
   <div class="root">
-    <page-title>About me hello</page-title>
+    <page-title>About me</page-title>
     <div id="info">
       <div>
         <label for="fname">Name</label>
@@ -17,7 +17,17 @@
       </div>
       <div>
         <label for="fname">Gender</label>
-        <input type="text" id="fname" name="fname" />
+        <div id="gender-btns">
+          <input type="radio" id="male" name="gender" value="male" />
+          <label for="male">Male</label><br />
+          <input type="radio" id="female" name="gender" value="female" />
+          <label for="female">Female</label><br />
+          <input type="radio" id="Non-binary" name="gender" value="Non-binary" />
+          <label for="Non-binary">Non-binary</label>
+          <input type="radio" id="Prefer not to disclose" name="gender" value="Prefer not to disclose" />
+          <label for="Prefer not to disclose">Prefer not to disclose</label>
+        </div>
+        <!-- <input type="text" id="fname" name="fname" /> -->
 
         <label for="fname">Department</label>
         <input type="text" id="fname" name="fname" />
@@ -28,6 +38,7 @@
         <br />
 
         <div id="buttons">
+          <img src="/img/human2.svg" alt="" />
           <button>Log out</button>
           <button>Update</button>
         </div>
@@ -57,7 +68,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 70px;
-  margin-right: 30%;
+  max-width: 1000px;
 }
 
 #info > div {
@@ -65,6 +76,8 @@ export default {
   flex-direction: column;
   row-gap: 10px;
   align-items: flex-start;
+  white-space: nowrap;
+
   /* margin: 10px; */
   /* column-gap: 10px; */
 }
@@ -94,6 +107,9 @@ input {
   padding-top: 5px;
   padding-bottom: 5px;
   width: 100%;
+  max-width: 350px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 #buttons {
@@ -101,6 +117,7 @@ input {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  max-width: 350px;
 }
 
 #buttons > button {
@@ -116,5 +133,76 @@ input {
   line-height: 21px;
   padding: 10px;
   border-radius: 5px;
+  height: fit-content;
 }
+
+#gender-btns {
+  display: flex;
+  justify-content: flex-start;
+  /* flex-wrap: wrap; */
+  /* width: 100%; */
+}
+#gender-btns > button {
+  /* margin-left: 20px;
+  background-color: #428FEA;
+  color: #FFFFFF;
+  border: none;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  padding: 10px;
+  border-radius: 5px; */
+
+  background: #EEEEEE;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  /* height: 44px; */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  /* width: 100%; */
+}
+
+.selected {
+  background-color: #428FEA !important;
+  color: #FFFFFF;
+}
+
+input[type="radio"] {
+  display: none;
+}
+input[type="radio"]+label {
+  user-select: none;
+  background: #EEEEEE;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  /* height: 44px; */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+input[type="radio"]:checked+label{
+  background-color: #428FEA !important;
+  color: #FFFFFF;
+  
+} 
+
 </style>
