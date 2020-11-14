@@ -42,6 +42,7 @@ export default {
   // align-items: flex-end;
   display: grid;
   grid-template-rows: 70% 30%;
+  user-select: none;
 }
 
 #human {

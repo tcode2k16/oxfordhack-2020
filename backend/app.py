@@ -2,7 +2,7 @@ from flask import Flask, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from config import CONFIG
 
-app = Flask(__name__, static_url_path='', static_folder='../static',)
+app = Flask(__name__, static_url_path='', static_folder='../build',)
 app.config['SQLALCHEMY_DATABASE_URI'] = CONFIG['db_url']
 app.secret_key = CONFIG['secret']
 db = SQLAlchemy(app)
@@ -41,7 +41,7 @@ db.create_all()
 
 @app.route('/')
 def entry():
-  return send_from_directory('../static', './index.html')
+  return send_from_directory('../build', './index.html')
 
 
 # @app.route('/<path:path>')

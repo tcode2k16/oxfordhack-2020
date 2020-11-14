@@ -43,6 +43,8 @@ def register():
 
 @app.route('/auth/login', methods=['POST'])
 def login():
+  if request.json == None:
+    return jsonify({'error': 'no data'})
   email = request.json['email']
   password = request.json['password']
 
@@ -57,7 +59,6 @@ def login():
   session['user_id'] = user.id
   
   return jsonify({'status': 'success'})
-
 
 @app.route('/auth/logout')
 def logout():
