@@ -32,24 +32,23 @@ class Hangout(db.Model):
   id = db.Column(db.Integer, primary_key=True)
 
   #status
-  status = db.Column(db.String(100), nullable=False) #available, matched, finalized, finished
+  status = db.Column(db.String(500), nullable=False) #available, matched, finalized, finished
 
-  #user1
+  #users
   author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-  author = db.relationship('User', backref=db.backref('hangouts', lazy=True), lazy=True)
+  participant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
   #hard condition
-  cond_name = db.Column(db.String(100), nullable=False) # *
-  cond_college = db.Column(db.String(100), nullable=False) # *
-  cond_department = db.Column(db.String(100), nullable=False) # *
+  cond_name = db.Column(db.String(500), nullable=False) # *
+  cond_college = db.Column(db.String(500), nullable=False) # *
+  cond_department = db.Column(db.String(500), nullable=False) # *
   cond_year = db.Column(db.Integer, nullable=False) # 0
-  cond_gender = db.Column(db.String(100), nullable=False) # *
+  cond_gender = db.Column(db.String(500), nullable=False) # *
 
   #soft condition
-  activity = db.Column(db.String(100), nullable=False)
-  time = db.Column(db.String(100), nullable=False)
-  location = db.Column(db.String(100), nullable=False)
-  
+  activity = db.Column(db.String(500), nullable=False)
+  time = db.Column(db.String(500), nullable=False)
+  location = db.Column(db.String(500), nullable=False)
   
   def __repr__(self):
     return '<Hangout %r %r %r>' % (self.time, self.activity, self.location)
