@@ -1,7 +1,7 @@
 from flask import Flask, session, redirect, url_for, request, jsonify
 from markupsafe import escape
 import bcrypt
-from app import app, User, db
+from app import app, User, db, Hangout
 
 
 @app.route('/auth')
@@ -69,6 +69,28 @@ def info():
       'description': user.description,
   }})
 
+
+@app.route('/auth/user_update', methods=['POST'])
+def update():
+  if 'user_id' not in session:
+    return jsonify({'error': 'not logged in'})
+  if request.json == None or not all([x in request.json for x in ['name', 'college', 'department', 'email', 'year', 'phone_number', 'gender', 'pronouns', 'description']]):
+    return jsonify({'error': 'missing info'})
+  user = User.query.filter_by(id=session['user_id']).first()
+
+  user.name = request.json['name']
+  user.college = request.json['college']
+  user.department = request.json['department']
+  user.email = request.json['email']
+  user.year = request.json['year']
+  user.phone_number = request.json['phone_number']
+  user.gender = request.json['gender']
+  user.pronouns = request.json['pronouns']
+  user.description = request.json['description']
+  db.session.commit()
+  return jsonify({'status': 'success'})
+
+
 # User Login
 
 
@@ -101,7 +123,7 @@ def logout():
 # get all (available/matched/finalized/finished) hangouts I posted
 @app.route('/auth/my_hangouts')
 def my_hangouts():
-  if session['user_id'] == None:
+  if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
 
   if request.json == None or not all([x in request.json for x in ['hangout_type']]):
@@ -109,7 +131,7 @@ def my_hangouts():
 
   hangout_type = request.json['hangout_type']
   uid = session['user_id']
-  hangouts = Hangouts.query.filter_by(author_id=uid, status=hangout_type).all(
+  hangouts = Hangout.query.filter_by(author_id=uid, status=hangout_type).all(
   ) + Hangouts.query.filter_by(participant_id=uid, status=hangout_type).all()
   return jsonify({'hangouts': hangouts})
 
@@ -118,7 +140,7 @@ def my_hangouts():
 
 @app.route('/auth/my_feed')
 def my_feed():
-  if session['user_id'] == None:
+  if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
 
   # retrive key user info
@@ -131,24 +153,51 @@ def my_feed():
   gender = user.gender
 
   # filter all hangouts
-  hangouts = Hangouts.query.all()
+  hangouts = Hangout.query.all()
   feeds = []
   for hangout in hangouts:
     if hangout.status == 'available':
-      if (name == hangout.cond_name or hangout.cond_name == '*') and \
+      if (uid != hangout.author_id) and \
+         (name == hangout.cond_name or hangout.cond_name == '*') and \
          (college == hangout.cond_college or hangout.cond_college == '*') and \
-         (department == hangout.department or hangout.cond_department == '*') and \
-         (year == hangout.year or houngout.cond_year == 0) and \
-         (gender == hangout.gender or hangout.cond_gender == '*'):
-        feeds.append(hangout)
+         (department == hangout.cond_department or hangout.cond_department == '*') and \
+         (year == hangout.cond_year or hangout.cond_year == 0) and \
+         (gender == hangout.cond_gender or hangout.cond_gender == '*'):
+        u = User.query.filter_by(id=hangout.author_id).first()
+        feeds.append({
+            'hangout_id': hangout.id,
+            'cond_name': hangout.cond_name,
+            'cond_college': hangout.cond_college,
+            'cond_department': hangout.cond_department,
+            'cond_year': hangout.cond_year,
+            'cond_gender': hangout.cond_gender,
+            'activity': hangout.activity,
+            'time': hangout.time,
+            'location': hangout.location,
+            'status': hangout.status,
+            'author_id': hangout.author_id,
+            'participant_id': hangout.participant_id,
+            'author': {
+                'id': u.id,
+                'name': u.name,
+                'college': u.college,
+                'department': u.department,
+                'email': u.email,
+                'year': u.year,
+                'phone_number': u.phone_number,
+                'gender': u.gender,
+                'pronouns': u.pronouns,
+                'description': u.description,
+            },
+        })
 
   return jsonify({'feeds': feeds})
 
 
 # 1. publish hangout
-@app.route('/auth/publish', methods=['POST'])
+@ app.route('/auth/publish', methods=['POST'])
 def publish():
-  if session['user_id'] == None:
+  if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
 
   if request.json == None or not all([x in request.json for x in ['time', 'location', 'activity', 'cond_name', 'cond_college', 'cond_department', 'cond_gender', 'cond_year']]):
@@ -177,9 +226,9 @@ def publish():
 # 2. take a hangout
 
 
-@app.route('/auth/take')
+@ app.route('/auth/take')
 def take():
-  if session['user_id'] == None:
+  if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
 
   if request.json == None or not all([x in request.json for x in ['hid']]):
@@ -187,7 +236,7 @@ def take():
 
   uid = session['user_id']
   hid = request.json['hid']
-  h = Hangouts.query.filter_by(id=hid).first()
+  h = Hangout.query.filter_by(id=hid).first()
 
   if h == None:
     return jsonify({'error': 'no hangout found'})
@@ -206,9 +255,9 @@ def take():
 # 3.1 the author accepts a matched handout
 
 
-@app.route('/auth/accept')
+@ app.route('/auth/accept')
 def accept():
-  if session['user_id'] == None:
+  if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
 
   if request.json == None or not all([x in request.json for x in ['hid']]):
@@ -216,7 +265,7 @@ def accept():
 
   uid = session['user_id']
   hid = request.json['hid']
-  h = Hangouts.query.filter_by(id=hid).first()
+  h = Hangout.query.filter_by(id=hid).first()
 
   if h == None:
     return jsonify({'error': 'no hangout found'})
@@ -232,9 +281,9 @@ def accept():
 # 3.2 the author declines a matched handout
 
 
-@app.route('/auth/decline')
+@ app.route('/auth/decline')
 def decline():
-  if session['user_id'] == None:
+  if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
 
   if request.json == None or not all([x in request.json for x in ['hid']]):
@@ -242,7 +291,7 @@ def decline():
 
   uid = session['user_id']
   hid = request.json['hid']
-  h = Hangouts.query.filter_by(id=hid).first()
+  h = Hangout.query.filter_by(id=hid).first()
 
   if h == None:
     return jsonify({'error': 'no hangout found'})
