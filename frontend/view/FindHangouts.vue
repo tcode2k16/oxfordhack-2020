@@ -13,15 +13,15 @@
     <div
       class="modal-overlay"
       v-if="modalOpen"
-      @close="closeModal"
+      @click="closeModal"
     ></div>
-    <modal v-if="modalOpen" @close="closeModal"></modal>
+    <modal v-if="modalOpen" :hangout="selectedHangout" @close="closeModal" @accept="acceptHangout(selectedHangout)"></modal>
     <page-title class="pageTitle">See what people are doing</page-title>
     <transition name="fade">
       <div class="cards">
         <card
           v-for="feed in feeds.filter(e => isFuture(e.time)).sort(sortByRecent)"
-          
+          @click="openModal(feed)"
           :key="feed.id"
           slotDirection="column"
           :title="feed.author.name"
@@ -98,7 +98,7 @@ import PageTitle from "../components/PageTitle";
 import PageButton from "../components/PageButton";
 import Notification from "../components/Notification";
 import Card from "../components/Card";
-import Modal from "../components/HangoutDetailsModal";
+import Modal from "../components/HangoutRequestModal";
 export default {
   name: "FindHangouts",
   components: {
@@ -126,8 +126,10 @@ export default {
     isFuture(t) {
       return moment(t).isAfter(moment());
     },
-    openModal() {
+    openModal(hangout) {
       this.modalOpen = true;
+      this.selectedHangout = hangout;
+      this.$set(this.selectedHangout, 'peer', hangout.author);
     },
     closeModal() {
       this.modalOpen = false;
@@ -138,6 +140,7 @@ export default {
       this.feeds = r.data.feeds;
     },
     async acceptHangout(hangout) {
+      this.openModal=false;
       console.log(hangout);
       let r = await Axios.post("/auth/take", {
         hid: hangout.hangout_id,
@@ -183,5 +186,17 @@ export default {
 
 button {
   margin-top: 20px;
+}
+
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 98;
+  background-color: #ffffff;
+  opacity: 50%;
 }
 </style>
