@@ -77,7 +77,7 @@ def publish_hangout (uid, if_requirement = False):
     }).text)
   else:
     print (session.post(url+'auth/publish', json={
-        'time': random.choice(["2020-11-15 11 p.m.", "2020-11-13 10 a.m.", "2020-11-17 5 p.m."]),
+        'time': random.choice(["2020-11-08 09", "2020-11-16 09", "2020-11-20 17", "2020-11-10 10"]),
         'location': random.choice(loc),
         'activity': random.choice(act),
         'cond_name': "*",

@@ -1,9 +1,12 @@
 <template>
   <div class="root">
-    <page-title>Upcoming Hangouts</page-title>
-    <button class="btn" @click="openModal">Open Modal</button>
+    <page-title class="pageTitle">Upcoming Hangouts</page-title>
     <div class="modal-overlay" v-if="modalOpen" @click="closeModal"></div>
-    <modal v-if="modalOpen" @close="closeModal"></modal>
+    <modal
+      v-if="modalOpen"
+      :hangout="selectedHangout"
+      @close="closeModal"
+    ></modal>
     <div id="first">
       <div id="cards">
         <card
@@ -13,6 +16,7 @@
           :title="hangout.peer.name"
           :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
           :content="`${hangout.activity} ${hangout.location} ${hangout.time}`"
+          @click="openModal(hangout)"
         />
         <!-- <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/>
         <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/> -->
@@ -31,6 +35,7 @@
           :title="hangout.peer.name"
           :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
           :content="`${hangout.activity} ${hangout.location} ${hangout.time}`"
+          @click="openModal(hangout)"
         >
           <page-button>We met!</page-button>
         </card>
@@ -67,15 +72,17 @@ export default {
       upcoming: [],
       past: [],
       modalOpen: false,
+      selectedHangout: {},
     };
   },
   methods: {
-    openModal() {
+    openModal(hangout) {
+      this.selectedHangout = hangout;
       this.modalOpen = true;
     },
     closeModal() {
       this.modalOpen = false;
-    }
+    },
   },
   async mounted() {
     let hangouts = [];
@@ -105,9 +112,12 @@ export default {
 
 <style scoped>
 .root {
-  margin-top: 5vh;
   display: flex;
   flex-direction: column;
+}
+
+.pageTitle {
+  margin-top: 5vh;
 }
 
 #first {
