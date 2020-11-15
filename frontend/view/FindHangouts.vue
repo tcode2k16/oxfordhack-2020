@@ -20,12 +20,13 @@
     <transition name="fade">
       <div class="cards">
         <card
-          v-for="feed in feeds"
+          v-for="feed in feeds.filter(e => isFuture(e.time)).sort(sortByRecent)"
+          
           :key="feed.id"
           slotDirection="column"
           :title="feed.author.name"
           :subtitle="`${feed.author.college} ${feed.author.department} ${feed.author.year}`"
-          :content="`${feed.activity} ${feed.location} ${feed.time}`"
+          :content="`${feed.activity} @ ${feed.location} ${getRelTime(feed.time)}`"
         >
           <page-button @click="acceptHangout(feed)">Let’s hangout!</page-button>
         </card>
@@ -92,6 +93,7 @@
 
 <script>
 import Axios from "axios";
+import moment from 'moment';
 import PageTitle from "../components/PageTitle";
 import PageButton from "../components/PageButton";
 import Notification from "../components/Notification";
@@ -115,6 +117,15 @@ export default {
     };
   },
   methods: {
+    sortByRecent(a, b) {
+      return moment(a.time) - moment(b.time);
+    },
+    getRelTime(t) {
+      return moment(t).fromNow();
+    },
+    isFuture(t) {
+      return moment(t).isAfter(moment());
+    },
     openModal() {
       this.modalOpen = true;
     },

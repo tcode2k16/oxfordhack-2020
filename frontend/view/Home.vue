@@ -6,18 +6,18 @@
       It's a good day to make a new friend :)
     </h1>
     <!-- <button class="btn" @click="openModal">Open Modal</button> -->
-    <div class="modal-overlay" v-if="modalOpen" @close="closeModal"></div>
+    <div class="modal-overlay" v-if="modalOpen" @click="closeModal"></div>
     <modal v-if="modalOpen" @close="closeModal" @success="showNoti"></modal>
     <page-title>Waiting for a match for your hangouts...</page-title>
     <div id="first">
       <div id="grid">
         <card
-          v-for="hangout in requests"
+          v-for="hangout in requests.filter(e => isFuture(e.time)).sort(sortByRecent)"
           :key="hangout.id"
           slotDirection="row"
           title=""
           subtitle=""
-          content="Walk around Unversity Parks at 12pm on November 14th, 2020"
+          :content="`${hangout.activity} @ ${hangout.location} ${getRelTime(hangout.time)}`"
         />
 
         <card
@@ -36,12 +36,12 @@
         <div id="second">
           <div id="cards">
             <card
-              v-for="hangout in upcoming.slice(0, Math.min(3, upcoming.length))"
+              v-for="hangout in upcoming.filter(e => isFuture(e.time)).sort(sortByRecent).slice(0, Math.min(3, upcoming.length))"
               :key="hangout.id"
               slotDirection="row"
               :title="hangout.peer.name"
               :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
-              :content="`${hangout.activity} ${hangout.location} ${hangout.time}`"
+              :content="`${hangout.activity} @ ${hangout.location} ${getRelTime(hangout.time)}`"
             />
           </div>
         </div>
@@ -87,7 +87,16 @@ export default {
     showNoti() {
       console.log("show noti");
       this.notiOpen = true; 
-    }
+    },
+    sortByRecent(a, b) {
+      return moment(a.time) - moment(b.time);
+    },
+    getRelTime(t) {
+      return moment(t).fromNow();
+    },
+    isFuture(t) {
+      return moment(t).isAfter(moment());
+    },
   },
   async mounted() {
     let hangouts = [];
