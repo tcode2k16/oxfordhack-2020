@@ -45,7 +45,7 @@ export default {
 }
 #app {
   display: grid;
-  grid-template-columns: 2.3fr 9.7fr;
+  grid-template-columns: 2.5fr 7.5fr;
   column-gap: 50px;
   height: 100vh;
   overflow: hidden;
