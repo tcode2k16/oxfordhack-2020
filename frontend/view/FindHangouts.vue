@@ -10,12 +10,16 @@
       msg="Hangout Matched!"
       :time="1000"
     ></notification>
+    <transition name="fade">
     <div
       class="modal-overlay"
       v-if="modalOpen"
       @click="closeModal"
     ></div>
+    </transition>
+    <transition name="fade">
     <modal v-if="modalOpen" :hangout="selectedHangout" @close="closeModal" @accept="acceptHangout(selectedHangout)"></modal>
+    </transition>
     <page-title class="pageTitle">See what people are doing</page-title>
     <transition name="fade">
       <div class="cards">
@@ -198,5 +202,16 @@ button {
   z-index: 98;
   background-color: #ffffff;
   opacity: 50%;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+  /* display: none; */
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+  /* display: none; */
 }
 </style>
