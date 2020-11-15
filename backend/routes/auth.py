@@ -115,7 +115,7 @@ def login():
   return jsonify({'status': 'login success', 'uid': user.id})
 
 
-@app.route('/auth/logout', methods=['POST'])
+@app.route('/auth/logout', methods=['GET'])
 def logout():
   session.pop('user_id', None)
   return jsonify({'status': 'logout success'})
@@ -174,7 +174,7 @@ def my_hangouts():
 # get all available hangouts that fit me
 
 
-@app.route('/auth/my_feed', methods=['POST'])
+@app.route('/auth/my_feed', methods=['POST', 'GET'])
 def my_feed():
   if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})

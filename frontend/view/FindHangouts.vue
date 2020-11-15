@@ -16,7 +16,7 @@
       @close="closeModal"
     ></div>
     <modal v-if="modalOpen" @close="closeModal"></modal>
-    <page-title>See what people are doing</page-title>
+    <page-title class="pageTitle">See what people are doing</page-title>
     <transition name="fade">
       <div class="cards">
         <card
@@ -153,9 +153,12 @@ export default {
 
 <style scoped>
 .root {
-  margin-top: 5vh;
   display: flex;
   flex-direction: column;
+}
+
+.pageTitle {
+  margin-top: 5vh;
 }
 
 .cards {

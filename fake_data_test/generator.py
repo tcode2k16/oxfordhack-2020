@@ -15,10 +15,10 @@ genders = ["male", "male", "male", "male", "male", "female", "female", "female",
 pronouns = ["not implemented"]
 
 
-u_number = 5
-publish_number = 5
-match_number = 5
-accept_number = 2
+u_number = 25
+publish_number = 40
+match_number = 20
+accept_number = 5
 
 u_ids = []
 u_names = [names.get_full_name() for i in range(u_number)]
@@ -27,7 +27,7 @@ u_department = [random.choice(departments) for i in range(u_number)]
 u_email = [str(random.randint(100000, 1000000)) + "@ox.ac.uk" for i in range(u_number)]
 u_gender = [random.choice(genders) for i in range(u_number)]
 u_pronoun = [random.choice(pronouns) for i in range(u_number)]
-u_year = [random.randint(2020, 2025) for i in range(u_number)]
+u_year = [random.randint(2020, 2024) for i in range(u_number)]
 u_phone = [str(random.randint(1000000000, 10000000000)) for i in range(u_number)]
 u_password = [''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=10)) for i in range(u_number)]       
 
@@ -59,9 +59,7 @@ def user_login (uid):
   }).text)
 
 def user_logout():
-  print (session.post(url+'auth/logout', json={
-
-    }).text)
+  print (session.get(url+'auth/logout').text)
 
 loc = ["Chrest Church Meadow", "Univ Park"]
 act = ["walk", "run", "swim"]
@@ -79,7 +77,7 @@ def publish_hangout (uid, if_requirement = False):
     }).text)
   else:
     print (session.post(url+'auth/publish', json={
-        'time': "2020-11-15 11 p.m.",
+        'time': random.choice(["2020-11-15 11 p.m.", "2020-11-13 10 a.m.", "2020-11-17 5 p.m."]),
         'location': random.choice(loc),
         'activity': random.choice(act),
         'cond_name': "*",
@@ -140,4 +138,5 @@ for i in range(accept_number  ):
   uid = random.randint(0, u_number - 1)
   user_login(uid)
   cand = get_cands()
-  accept(random.choice(cand)['hangout_id'])
+  if len(cand) > 0:
+    accept(random.choice(cand)['hangout_id'])
