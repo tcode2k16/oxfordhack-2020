@@ -1,25 +1,12 @@
 <template>
   <div class="modal">
-    <div class="container">
         <div class="center">
           <page-title >Create a new hangout</page-title>
         </div>
         <div id="info">
           <div>
             <label for="fname">Location</label>
-              <div id="gender-btns">
-                <input v-model="location" type="radio" id="anywhere" name="location" value="anywhere" />
-                <label for="anywhere">Anywhere</label>
-            
-                <input v-model="location" type="radio" id="christ" name="location" value="christ" />
-                <label for="christ">Christ Church Meadow</label>
-            
-                <input v-model="location" type="radio" id="university" name="location" value="university" />
-                <label for="university">University Parks</label>
-          
-                <input v-model="location" type="radio" id="port" name="location" value="port" />
-                <label for="port">Port Meadow</label>
-              </div>
+            <input type="text" id="dateTime" name="dateTime" />
               <label for="fname">Activity</label>
               <div id="gender-btns">
                 <input v-model="activity" type="radio" id="anything" name="activity" value="anything" />
@@ -67,7 +54,7 @@
           <button @click="createHangout();close();">Create hangout</button>
         </div>
       </div>
-    </div>
+
 </template>
     
 <script>
@@ -166,7 +153,7 @@ export default {
     
     
 <style lang="css" scoped>
-.modal {
+/* .modal {
   background-color: #fff;
   position: fixed;
   top: 10%;
@@ -177,6 +164,29 @@ export default {
   max-width: 1100px;
   border-radius: 5px;
   padding: 40px;
+  border: 3px solid #428fea;
+  z-index: 99;
+} */
+
+.modal {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: 1200px;
+  max-height: 600px;
+  /* top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 5px;
+  padding: 40px; */
+  background-color: #F8F8F8;
   border: 3px solid #428fea;
   z-index: 99;
 }
@@ -271,7 +281,8 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 70px;
-  max-width: 1000px;
+  max-width: 1200px;
+  padding: 40px;
 }
 
 #info > div {

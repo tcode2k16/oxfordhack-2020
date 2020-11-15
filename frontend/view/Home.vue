@@ -2,7 +2,7 @@
   <div class="root">
     <notification v-if="notiOpen" @close="()=>{notiOpen = false}" msg="Created a new hangout!" :time="2000"></notification>
     <h1 class="heading">
-      Hello, Alan! <br />
+      Hello, Nicole! <br />
       It's a good day to make a new friend :)
     </h1>
     <!-- <button class="btn" @click="openModal">Open Modal</button> -->
