@@ -5,10 +5,10 @@
     <div
       class="modal-overlay"
       v-if="modalOpen"
-      @close="showModal = false"
+      @close="closeModal"
     ></div>
-    <modal v-if="modalOpen"></modal>
-    <page-title>Waiting for a friend for your hangouts...</page-title>
+    <modal v-if="modalOpen" @close="closeModal"></modal>
+    <page-title>Waiting for a match for your hangouts...</page-title>
     <div id="first">
       <div id="cards">
         <card
@@ -22,6 +22,12 @@
           title="Alan"
           subtitle="First"
           content="Walk around Unversity Parks at 12pm on November 14th, 2020"
+        />
+        <card 
+          slotDirection="row"
+          title=""
+          subtitle=""
+          content="Create a new hangout!"
         />
       </div>
     </div>
@@ -53,7 +59,7 @@
 
 <script>
 import PageTitle from "../components/PageTitle";
-import Modal from "../components/Modal";
+import Modal from "../components/CreateHangoutModal";
 import Card from "../components/Card";
 export default {
   name: "Home",
@@ -69,8 +75,11 @@ export default {
   },
   methods: {
     openModal() {
-      this.modalOpen = !this.modalOpen;
+      this.modalOpen = true;
     },
+    closeModal() {
+      this.modalOpen = false;
+    }
   },
 };
 </script>
