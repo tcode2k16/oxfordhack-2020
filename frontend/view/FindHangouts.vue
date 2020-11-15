@@ -10,6 +10,12 @@
       msg="Hangout Matched!"
       :time="1000"
     ></notification>
+    <div
+      class="modal-overlay"
+      v-if="modalOpen"
+      @close="closeModal"
+    ></div>
+    <modal v-if="modalOpen" @close="closeModal"></modal>
     <page-title>See what people are doing</page-title>
     <transition name="fade">
       <div class="cards">
@@ -90,6 +96,7 @@ import PageTitle from "../components/PageTitle";
 import PageButton from "../components/PageButton";
 import Notification from "../components/Notification";
 import Card from "../components/Card";
+import Modal from "../components/HangoutDetailsModal";
 export default {
   name: "FindHangouts",
   components: {
@@ -97,15 +104,23 @@ export default {
     "page-button": PageButton,
     notification: Notification,
     card: Card,
+    Modal,
   },
   data() {
     return {
       feeds: {},
       interval: undefined,
       notiOpen: false,
+      modalOpen: false,
     };
   },
   methods: {
+    openModal() {
+      this.modalOpen = true;
+    },
+    closeModal() {
+      this.modalOpen = false;
+    },
     async refreshFeed() {
       let r = await Axios.get("/auth/my_feed");
       console.log(r.data);
