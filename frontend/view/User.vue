@@ -22,9 +22,13 @@
           <label for="male">Male</label>
           <br />
           <input type="radio" id="female" name="gender" value="female" />
-          <label for="female">Female</label>
-          <br />
-          <input type="radio" id="Non-binary" name="gender" value="Non-binary" />
+          <label for="female">Female</label><br />
+          <input
+            type="radio"
+            id="Non-binary"
+            name="gender"
+            value="Non-binary"
+          />
           <label for="Non-binary">Non-binary</label>
           <input
             type="radio"
@@ -45,9 +49,9 @@
         <br />
 
         <div id="buttons">
-          <img src="/img/human2.svg" alt />
-          <button>Log out</button>
-          <button>Update</button>
+          <img src="/img/human2.svg" alt="" />
+          <page-button @click="logout">Log out</page-button>
+          <page-button>Update</page-button>
         </div>
       </div>
     </div>
@@ -55,12 +59,21 @@
 </template>
 
 <script>
+import Axios from "axios";
 import PageTitle from "../components/PageTitle";
+import PageButton from "../components/PageButton";
 export default {
   name: "User",
   components: {
-    "page-title": PageTitle
-  }
+    "page-title": PageTitle,
+    "page-button": PageButton,
+  },
+  methods: {
+    async logout() {
+      await Axios.get("/auth/logout");
+      this.$router.push('/login');
+    },
+  },
 };
 </script>
 
@@ -124,60 +137,13 @@ input {
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  max-width: 350px;
-}
-
-#buttons > button {
-  margin-left: 20px;
-  background-color: #428fea;
-  color: #ffffff;
-  border: none;
-
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-  padding: 10px;
-  border-radius: 5px;
-  height: fit-content;
-
-  cursor: pointer;
+  max-width: 370px;
 }
 
 #gender-btns {
   display: flex;
   justify-content: flex-start;
   /* flex-wrap: wrap; */
-  /* width: 100%; */
-}
-#gender-btns > button {
-  /* margin-left: 20px;
-  background-color: #428FEA;
-  color: #FFFFFF;
-  border: none;
-
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-  padding: 10px;
-  border-radius: 5px; */
-
-  background: #eeeeee;
-  border-radius: 5px;
-  outline: none;
-  border: none;
-  /* height: 44px; */
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
-  /* padding: 5px; */
-  padding-top: 5px;
-  padding-bottom: 5px;
   /* width: 100%; */
 }
 
@@ -209,7 +175,7 @@ input[type="radio"] + label {
   padding-right: 5px;
 }
 input[type="radio"]:checked + label {
-  background-color: #428fea !important;
-  color: #ffffff;
+  background-color: #428FEA !important;
+  color: #FFFFFF;
 }
 </style>

@@ -15,13 +15,28 @@
     <div id="second">
       <div id="cards">
         <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <button>hello</button>
+          <page-button>We met!</page-button>
         </card>
         <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <button>hello</button>
+          <page-button>We met!</page-button>
         </card>
         <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <button>hello</button>
+          <page-button>We met!</page-button>
+        </card>
+        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
+          <page-button>We met!</page-button>
+        </card>
+        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
+          <page-button>We met!</page-button>
+        </card>
+        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
+          <page-button>We met!</page-button>
+        </card>
+        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
+          <page-button>We met!</page-button>
+        </card>
+        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
+          <page-button>We met!</page-button>
         </card>
       </div>
     </div>
@@ -31,13 +46,13 @@
 <script>
 import PageTitle from "../components/PageTitle";
 import Card from "../components/Card";
-import Button from "../components/Button";
+import PageButton from "../components/PageButton";
 export default {
   name: "Hangouts",
   components: {
     "page-title": PageTitle,
     'card': Card,
-    'button': Button,
+    'page-button': PageButton,
   },
 };
 </script>
@@ -47,7 +62,6 @@ export default {
   margin-top: 5vh;
   display: flex;
   flex-direction: column;
-  
 }
 
 #first {
@@ -66,6 +80,7 @@ export default {
 
 #second {
   max-width: 1000px;
+  margin-bottom: 5vh;
 }
 
 

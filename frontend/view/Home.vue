@@ -2,7 +2,11 @@
   <div class="root">
     <h1>Hello, Alan! It's a good day to make a new friend :)</h1>
     <button class="btn" @click="openModal">Open Modal</button>
-    <div class="modal-overlay" v-if="modalOpen" @close="showModal = false"></div>
+    <div
+      class="modal-overlay"
+      v-if="modalOpen"
+      @close="showModal = false"
+    ></div>
     <modal v-if="modalOpen"></modal>
     <page-title>Waiting for a friend for your hangouts...</page-title>
     <div id="first">
@@ -56,18 +60,18 @@ export default {
   components: {
     "page-title": PageTitle,
     card: Card,
-    Modal
+    Modal,
   },
   data() {
     return {
-      modalOpen: false
+      modalOpen: false,
     };
   },
   methods: {
     openModal() {
       this.modalOpen = !this.modalOpen;
-    }
-  }
+    },
+  },
 };
 </script>
 

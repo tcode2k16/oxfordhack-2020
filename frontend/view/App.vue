@@ -28,6 +28,7 @@ export default {
 
 #router {
   overflow: scroll;
+  /* overflow-x: hidden; */
 }
 
 .fade-enter-to, .v-leave {

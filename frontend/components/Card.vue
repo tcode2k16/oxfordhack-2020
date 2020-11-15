@@ -13,7 +13,7 @@
 import PageTitle from "../components/PageTitle";
 export default {
   name: "Card",
-  props: ["title", "subtitle", "content", "slotDirection"]
+  props: ["title", "subtitle", "content", 'slotDirection'],
 };
 </script>
 
@@ -27,6 +27,7 @@ export default {
   display: flex;
   height: min-content;
   justify-content: space-between;
+  align-items: center;
 }
 
 .bold {
