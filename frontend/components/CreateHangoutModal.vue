@@ -1,44 +1,40 @@
 <template>
   <div class="modal">
     <div class="container">
-      <div>
         <div class="center">
           <page-title >Create a new hangout</page-title>
         </div>
-        <label for="fname">Location</label>
-        <div id="gender-btns">
-          <input v-model="location" type="radio" id="anywhere" name="location" value="anywhere" />
-          <label for="anywhere">Anywhere</label>
-       
-          <input v-model="location" type="radio" id="christ" name="location" value="christ" />
-          <label for="christ">Christ Church Meadow</label>
-      
-          <input v-model="location" type="radio" id="university" name="location" value="university" />
-          <label for="university">University Parks</label>
-     
-          <input v-model="location" type="radio" id="port" name="location" value="port" />
-          <label for="port">Port Meadow</label>
-        </div>
-        <br />
         <div id="info">
           <div>
-            <label for="fname">Activity</label>
-            <div id="gender-btns">
-              <input v-model="activity" type="radio" id="anything" name="activity" value="anything" />
-              <label for="anything">Anything</label>
-              <input v-model="activity" type="radio" id="walk" name="activity" value="walk" />
-              <label for="walk">Walk</label>
-              <input v-model="activity" type="radio" id="run" name="activity" value="run" />
-              <label for="run">Run</label>
-              <input v-model="activity" type="radio" id="bike" name="activity" value="bike" />
-              <label for="bike">Bike</label>
-              <input v-model="activity" type="radio" id="sit" name="activity" value="sit" />
-              <label for="sit">Sit</label>
-            </div>
+            <label for="fname">Location</label>
+              <div id="gender-btns">
+                <input v-model="location" type="radio" id="anywhere" name="location" value="anywhere" />
+                <label for="anywhere">Anywhere</label>
+            
+                <input v-model="location" type="radio" id="christ" name="location" value="christ" />
+                <label for="christ">Christ Church Meadow</label>
+            
+                <input v-model="location" type="radio" id="university" name="location" value="university" />
+                <label for="university">University Parks</label>
+          
+                <input v-model="location" type="radio" id="port" name="location" value="port" />
+                <label for="port">Port Meadow</label>
+              </div>
+              <label for="fname">Activity</label>
+              <div id="gender-btns">
+                <input v-model="activity" type="radio" id="anything" name="activity" value="anything" />
+                <label for="anything">Anything</label>
+                <input v-model="activity" type="radio" id="walk" name="activity" value="walk" />
+                <label for="walk">Walk</label>
+                <input v-model="activity" type="radio" id="run" name="activity" value="run" />
+                <label for="run">Run</label>
+                <input v-model="activity" type="radio" id="bike" name="activity" value="bike" />
+                <label for="bike">Bike</label>
+                <input v-model="activity" type="radio" id="sit" name="activity" value="sit" />
+                <label for="sit">Sit</label>
+              </div>
             <label for="dateTime">Date and time</label>
             <input type="text" id="dateTime" name="dateTime" v-model="time" />
-            <label for="additional">Additional info</label>
-            <input type="text" id="additional" name="additional"/>
           </div>
           <div>
             <label for="filter">I'd like to meet people from...</label>
@@ -67,12 +63,11 @@
             </div>
           </div>
         </div>
-        <div id="buttons">
-          <button @click="createHangout();close();">Createee hangout</button>
+        <div id="buttons" class="center">
+          <button @click="createHangout();close();">Create hangout</button>
         </div>
       </div>
     </div>
-  </div>
 </template>
     
 <script>
@@ -85,18 +80,30 @@ export default {
   async createHangout() {
     let r = await Axios.post("/auth/publish", {
       time: "time",
-      location: "s",
-      activity: "s",
-      cond_name: "cond",
-      cond_college: "c",
-      cond_department: "d",
-      cond_gender: "s",
-      cond_year: "y"
+      location: this.location,
+      activity: this.activity,
+      cond_name: "*",
+      cond_college: this.collegeValue,
+      cond_department: this.departmentValue,
+      cond_gender: this.cond_gender,
+      cond_year: this.cond_year
+      // time: "time",
+      // location: this.location,
+      // activity: this.activity,
+      // cond_name: "hello",
+      // cond_college: this.collegeValue,
+      // cond_department: this.departmentValue,
+      // cond_gender: this.cond_gender,
+      // cond_year: this.cond_year
     });
-    // if (!r.data.error) {
-    //     this.notiOpen = true;
-    //   }
+    if (!r.data.error) {
+        this.success();
+      }
     console.log(r.data);
+  },
+  success(event) {
+    console.log("success!");
+    this.$emit("success");
   },
   close(event) {
       this.$emit("close");
@@ -114,13 +121,13 @@ export default {
   },
   data () {
     return {
-      time: "time",
-      location: undefined,
-      activity: undefined,
+      time: undefined,
+      location: "anywhere",
+      activity: "anything",
       cond_name: undefined,
       cond_college: undefined,
       cond_department: undefined,
-      cond_gender: undefined,
+      cond_gender: "anyone",
       cond_year: undefined,
 
       collegeValue: "All College",
@@ -175,14 +182,14 @@ export default {
 }
 
 .multiselect >>> .multiselect__tags {
-    font-size: 14px;
+    font-size: 16px;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
 }
 
 .multiselect >>> .multiselect__select {
-    font-size: 14px;
+    font-size: 16px;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -191,13 +198,13 @@ export default {
 #buttons {
   margin-top: 20px;
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   width: 100%;
   max-width: 350px;
 }
 
 #buttons > button {
-  margin-left: 20px;
+  /* margin-left: 20px; */
   background-color: #428fea;
   color: #ffffff;
   border: none;
@@ -205,8 +212,8 @@ export default {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
+  font-size: 20px;
+  line-height: 20px;
   padding: 10px;
   border-radius: 5px;
   height: fit-content;
@@ -243,13 +250,21 @@ export default {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 16px;
   /* padding: 5px; */
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px; 
   cursor: pointer;
   /* width: 100%; */
+}
+
+.row {
+  display: flex;
+  width: 100%; 
+  height: 100%;
 }
 
 #info {
@@ -262,7 +277,7 @@ export default {
 #info > div {
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  row-gap: 20px;
   align-items: flex-start;
   white-space: nowrap;
 
@@ -288,8 +303,8 @@ input[type="radio"] + label {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 20px;
+  line-height: 20px;
   /* padding: 5px; */
   padding-top: 5px;
   padding-bottom: 5px;
@@ -306,8 +321,8 @@ label {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 20px;
+  line-height: 20px;
 
   color: #000000;
 }
@@ -321,8 +336,8 @@ input {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 20px;
+  line-height: 20px;
   /* padding: 5px; */
   padding-top: 5px;
   padding-bottom: 5px;

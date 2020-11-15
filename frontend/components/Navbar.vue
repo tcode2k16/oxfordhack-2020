@@ -6,7 +6,7 @@
           ['/', 'Home'],
           ['/find-hangouts', 'Find Hangouts'],
           ['/hangouts', 'Hangouts'],
-          ['/user', 'User'],
+          ['/user', 'Profile'],
         ]"
         :key="route"
         :to="route"

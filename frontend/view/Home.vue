@@ -1,12 +1,13 @@
 <template>
   <div class="root">
+    <notification v-if="notiOpen" @close="()=>{notiOpen = false}" msg="Created a new hangout!" :time="2000"></notification>
     <h1 class="heading">
       Hello, Alan! <br />
       It's a good day to make a new friend :)
     </h1>
     <!-- <button class="btn" @click="openModal">Open Modal</button> -->
     <div class="modal-overlay" v-if="modalOpen" @close="closeModal"></div>
-    <modal v-if="modalOpen" @close="closeModal"></modal>
+    <modal v-if="modalOpen" @close="closeModal" @success="showNoti"></modal>
     <page-title>Waiting for a match for your hangouts...</page-title>
     <div id="first">
       <div id="grid">
@@ -55,6 +56,7 @@
 <script>
 import Axios from "axios";
 import moment from "moment";
+import Notification from "../components/Notification";
 import PageTitle from "../components/PageTitle";
 import Modal from "../components/CreateHangoutModal";
 import Card from "../components/Card";
@@ -64,12 +66,14 @@ export default {
     "page-title": PageTitle,
     card: Card,
     Modal,
+    'notification': Notification,
   },
   data() {
     return {
       modalOpen: false,
       upcoming: [],
       requests: [],
+      notiOpen: false,
     };
   },
   methods: {
@@ -77,8 +81,13 @@ export default {
       this.modalOpen = true;
     },
     closeModal() {
+      console.log("close modal");
       this.modalOpen = false;
     },
+    showNoti() {
+      console.log("show noti");
+      this.notiOpen = true; 
+    }
   },
   async mounted() {
     let hangouts = [];

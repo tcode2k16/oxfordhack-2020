@@ -84,7 +84,7 @@ export default {
 
 .icon {
     margin-right: 10px;
-    margin-left: 20%;
+    margin-left: 30%;
 }
 
 .row {
