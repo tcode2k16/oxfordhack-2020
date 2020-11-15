@@ -1,5 +1,5 @@
 <template>
-  <div class="card-root" :style="'flex-direction: '+slotDirection+';'">
+  <div @click="onclick" class="card-root" :style="'flex-direction: '+slotDirection+';'">
     <div class="text">
       <p v-if="title" class="bold" style="margin-bottom: 0">{{ title }}</p>
       <p v-if="subtitle" style="margin-top: 0">{{ subtitle }}</p>
@@ -14,6 +14,11 @@ import PageTitle from "../components/PageTitle";
 export default {
   name: "Card",
   props: ["title", "subtitle", "content", 'slotDirection'],
+  methods: {
+    onclick(e) {
+      this.$emit('click', e);
+    }
+  }
 };
 </script>
 
@@ -29,6 +34,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  cursor: pointer;
 }
 
 .text {

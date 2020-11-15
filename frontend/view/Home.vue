@@ -19,16 +19,14 @@
           content="Walk around Unversity Parks at 12pm on November 14th, 2020"
         />
 
-      <div @click="openModal" id="addNew">
         <card
+          @click="openModal"
           slotDirection="row"
           title=""
           subtitle=""
           id="gray"
           content="Create a new hangout!"
         />
-      </div>
-        
       </div>
     </div>
     <div id="split">
@@ -188,7 +186,4 @@ h1 {
   margin-bottom: 100px;
 }
 
-#addNew {
-  cursor:pointer;
-}
 </style>
