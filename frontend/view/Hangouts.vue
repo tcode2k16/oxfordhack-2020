@@ -15,7 +15,7 @@
           slotDirection="row"
           :title="hangout.peer.name"
           :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
-          :content="`${hangout.activity} ${hangout.location} ${hangout.time}`"
+          :content="`${hangout.activity} @ ${hangout.location} ${getRelTime(hangout.time)}`"
           @click="openModal(hangout)"
         />
         <!-- <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/>
@@ -34,7 +34,7 @@
           slotDirection="row"
           :title="hangout.peer.name"
           :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
-          :content="`${hangout.activity} ${hangout.location} ${hangout.time}`"
+          :content="`${hangout.activity} @ ${hangout.location} ${getRelTime(hangout.time)}`"
           @click="openModal(hangout)"
         >
           <page-button>We met!</page-button>
@@ -54,10 +54,10 @@
 
 <script>
 import Axios from "axios";
+import moment from 'moment';
 import PageTitle from "../components/PageTitle";
 import Card from "../components/Card";
 import PageButton from "../components/PageButton";
-import moment from "moment";
 import Modal from "../components/HangoutDetailsModal";
 export default {
   name: "Hangouts",
@@ -82,6 +82,15 @@ export default {
     },
     closeModal() {
       this.modalOpen = false;
+    },
+    sortByRecent(a, b) {
+      return moment(a.time) - moment(b.time);
+    },
+    getRelTime(t) {
+      return moment(t).fromNow();
+    },
+    isFuture(t) {
+      return moment(t).isAfter(moment());
     },
   },
   async mounted() {
