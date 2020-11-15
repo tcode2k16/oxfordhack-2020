@@ -1,57 +1,87 @@
 <template>
   <div class="root">
+    <notification v-if="notiOpen" @close="()=>{notiOpen = false}" msg="Updated!" :time="1000"></notification>
     <page-title>About me</page-title>
     <div id="info">
       <div>
-        <label for="fname">Name</label>
-        <input type="text" id="fname" name="fname" />
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" v-model="name" />
 
-        <label for="fname">Preferred pronouns</label>
-        <input type="text" id="fname" name="fname" />
-        <label for="fname">Graduation year</label>
-        <input type="text" id="fname" name="fname" />
-        <label for="fname">Email</label>
-        <input type="text" id="fname" name="fname" />
-        <label for="fname">College</label>
-        <input type="text" id="fname" name="fname" />
+        <label for="pronouns">Preferred pronouns</label>
+        <input type="text" id="pronouns" name="pronouns" v-model="pronouns" />
+        <label for="year">Graduation year</label>
+        <input type="text" id="year" name="year" v-model="year" />
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" v-model="email" />
+        <label for="college">College</label>
+        <input type="text" id="college" name="college" v-model="college" />
       </div>
       <div>
         <label for="fname">Gender</label>
         <div id="gender-btns">
-          <input type="radio" id="male" name="gender" value="male" />
+          <input
+            v-model="gender"
+            type="radio"
+            id="male"
+            name="gender"
+            value="male"
+          />
           <label for="male">Male</label>
           <br />
-          <input type="radio" id="female" name="gender" value="female" />
+          <input
+            v-model="gender"
+            type="radio"
+            id="female"
+            name="gender"
+            value="female"
+          />
           <label for="female">Female</label><br />
           <input
+            v-model="gender"
             type="radio"
-            id="Non-binary"
+            id="NonBinary"
             name="gender"
-            value="Non-binary"
+            value="non-binary"
           />
-          <label for="Non-binary">Non-binary</label>
+          <label for="NonBinary">Non-binary</label>
           <input
+            v-model="gender"
             type="radio"
-            id="Prefer not to disclose"
+            id="Prefernottodisclose"
             name="gender"
-            value="Prefer not to disclose"
+            value="prefer not to disclose"
           />
-          <label for="Prefer not to disclose">Prefer not to disclose</label>
+          <label for="Prefernottodisclose">Prefer not to disclose</label>
         </div>
         <!-- <input type="text" id="fname" name="fname" /> -->
 
-        <label for="fname">Department</label>
-        <input type="text" id="fname" name="fname" />
-        <label for="fname">Hobbies / interests</label>
-        <input type="text" id="fname" name="fname" />
-        <label for="fname">Phone number</label>
-        <input type="text" id="fname" name="fname" />
+        <label for="department">Department</label>
+        <input
+          type="text"
+          id="department"
+          name="department"
+          v-model="department"
+        />
+        <label for="description">Hobbies / interests</label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          v-model="description"
+        />
+        <label for="phonenumber">Phone number</label>
+        <input
+          type="text"
+          id="phonenumber"
+          name="phonenumber"
+          v-model="phone_number"
+        />
         <br />
 
         <div id="buttons">
           <img src="/img/human2.svg" alt="" />
           <page-button @click="logout">Log out</page-button>
-          <page-button>Update</page-button>
+          <page-button id="update" @click="updateProfile">Update</page-button>
         </div>
       </div>
     </div>
@@ -62,17 +92,68 @@
 import Axios from "axios";
 import PageTitle from "../components/PageTitle";
 import PageButton from "../components/PageButton";
+import Notification from "../components/Notification";
 export default {
   name: "User",
   components: {
     "page-title": PageTitle,
     "page-button": PageButton,
+    'notification': Notification,
+  },
+  data() {
+    return {
+      id: undefined,
+      name: undefined,
+      college: undefined,
+      department: undefined,
+      email: undefined,
+      year: undefined,
+      phone_number: undefined,
+      gender: undefined,
+      pronouns: undefined,
+      description: undefined,
+      notiOpen: false,
+    };
   },
   methods: {
     async logout() {
       await Axios.get("/auth/logout");
-      this.$router.push('/login');
+      this.$router.push("/login");
     },
+    async updateProfile() {
+      let r = await Axios.post("/auth/user_update", {
+        name: this.name,
+        id: this.id,
+        name: this.name,
+        college: this.college,
+        department: this.department,
+        email: this.email,
+        year: this.year,
+        phone_number: this.phone_number,
+        gender: this.gender,
+        pronouns: this.pronouns,
+        description: this.description,
+      });
+      if (!r.data.error) {
+        this.notiOpen = true;
+      }
+    },
+  },
+  async mounted() {
+    let r = await Axios.get("/auth/user_info");
+    if (r.status === 200 && !r.data.error) {
+      this.name = r.data.user.name;
+      this.id = r.data.user.id;
+      this.name = r.data.user.name;
+      this.college = r.data.user.college;
+      this.department = r.data.user.department;
+      this.email = r.data.user.email;
+      this.year = r.data.user.year;
+      this.phone_number = r.data.user.phone_number;
+      this.gender = r.data.user.gender;
+      this.pronouns = r.data.user.pronouns;
+      this.description = r.data.user.description;
+    }
   },
 };
 </script>
@@ -178,4 +259,5 @@ input[type="radio"]:checked + label {
   background-color: #428FEA !important;
   color: #FFFFFF;
 }
+
 </style>
