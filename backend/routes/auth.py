@@ -114,11 +114,11 @@ def login():
 
   session['user_id'] = user.id
   print("t2 ", ('user_id' in session))
-  
+
   return jsonify({'status': 'login success', 'uid': user.id})
 
 
-@app.route('/auth/logout', methods=['POST'])
+@app.route('/auth/logout')
 def logout():
   session.pop('user_id', None)
   return jsonify({'status': 'logout success'})
@@ -144,32 +144,34 @@ def my_hangouts():
     if uid == session['user_id']:
       uid = h.participant_id
     u = User.query.filter_by(id=uid).first()
-    output.append({
-            'hangout_id': h.id,
-            'cond_name': h.cond_name,
-            'cond_college': h.cond_college,
-            'cond_department': h.cond_department,
-            'cond_year': h.cond_year,
-            'cond_gender': h.cond_gender,
-            'activity': h.activity,
-            'time': h.time,
-            'location': h.location,
-            'status': h.status,
-            'author_id': h.author_id,
-            'participant_id': h.participant_id,
-            'peer': {
-                'id': u.id,
-                'name': u.name,
-                'college': u.college,
-                'department': u.department,
-                'email': u.email,
-                'year': u.year,
-                'phone_number': u.phone_number,
-                'gender': u.gender,
-                'pronouns': u.pronouns,
-                'description': u.description,
-            },
-        })
+    o = {
+        'hangout_id': h.id,
+        'cond_name': h.cond_name,
+        'cond_college': h.cond_college,
+        'cond_department': h.cond_department,
+        'cond_year': h.cond_year,
+        'cond_gender': h.cond_gender,
+        'activity': h.activity,
+        'time': h.time,
+        'location': h.location,
+        'status': h.status,
+        'author_id': h.author_id,
+        'participant_id': h.participant_id,
+    }
+    if u != None:
+      o['peer'] = {
+          'id': u.id,
+          'name': u.name,
+          'college': u.college,
+          'department': u.department,
+          'email': u.email,
+          'year': u.year,
+          'phone_number': u.phone_number,
+          'gender': u.gender,
+          'pronouns': u.pronouns,
+          'description': u.description,
+      }
+    output.append(o)
   return jsonify({'hangouts': output})
 
 # get all available hangouts that fit me
@@ -181,17 +183,17 @@ def my_feed():
     return jsonify({'error': 'not logged in'})
 
   # retrive key user info
-  uid=session['user_id']
-  user=User.query.filter_by(id = uid).first()
-  name=user.name
-  college=user.college
-  department=user.department
-  year=user.year
-  gender=user.gender
+  uid = session['user_id']
+  user = User.query.filter_by(id=uid).first()
+  name = user.name
+  college = user.college
+  department = user.department
+  year = user.year
+  gender = user.gender
 
   # filter all hangouts
-  hangouts=Hangout.query.all()
-  feeds=[]
+  hangouts = Hangout.query.all()
+  feeds = []
   for hangout in hangouts:
     if hangout.status == 'available':
       if (uid != hangout.author_id) and \
@@ -200,7 +202,7 @@ def my_feed():
          (department == hangout.cond_department or hangout.cond_department == '*') and \
          (year == hangout.cond_year or hangout.cond_year == 0) and \
          (gender == hangout.cond_gender or hangout.cond_gender == '*'):
-        u=User.query.filter_by(id = hangout.author_id).first()
+        u = User.query.filter_by(id=hangout.author_id).first()
         feeds.append({
             'hangout_id': hangout.id,
             'cond_name': hangout.cond_name,
@@ -232,7 +234,7 @@ def my_feed():
 
 
 # 1. publish hangout
-@ app.route('/auth/publish', methods = ['POST'])
+@ app.route('/auth/publish', methods=['POST'])
 def publish():
   print("t3 ", ('user_id' in session))
   # print("pre-publishing check", ('user_id' in session))
@@ -242,18 +244,18 @@ def publish():
   if request.json == None or not all([x in request.json for x in ['time', 'location', 'activity', 'cond_name', 'cond_college', 'cond_department', 'cond_gender', 'cond_year']]):
     return jsonify({'error': 'missing info'})
 
-  uid=session['user_id']
-  h=Hangout(
-      time = request.json['time'],
-      location = request.json['location'],
-      activity = request.json['activity'],
-      cond_name = request.json['cond_name'],
-      cond_college = request.json['cond_college'],
-      cond_department = request.json['cond_department'],
-      cond_gender = request.json['cond_gender'],
-      cond_year = request.json['cond_year'],
-      status = 'available',
-      author_id = uid,
+  uid = session['user_id']
+  h = Hangout(
+      time=request.json['time'],
+      location=request.json['location'],
+      activity=request.json['activity'],
+      cond_name=request.json['cond_name'],
+      cond_college=request.json['cond_college'],
+      cond_department=request.json['cond_department'],
+      cond_gender=request.json['cond_gender'],
+      cond_year=request.json['cond_year'],
+      status='available',
+      author_id=uid,
   )
   db.session.add(h)
   db.session.commit()
@@ -272,9 +274,9 @@ def take():
   if request.json == None or not all([x in request.json for x in ['hid']]):
     return jsonify({'error': 'missing info'})
 
-  uid=session['user_id']
-  hid=request.json['hid']
-  h=Hangout.query.filter_by(id = hid).first()
+  uid = session['user_id']
+  hid = request.json['hid']
+  h = Hangout.query.filter_by(id=hid).first()
 
   if h == None:
     return jsonify({'error': 'no hangout found'})
@@ -283,8 +285,8 @@ def take():
     return jsonify({'error': 'hangout not available'})
 
   # WILL THIS CHANGE THE DATABASE?
-  h.participant_id=uid
-  h.status='matched'
+  h.participant_id = uid
+  h.status = 'matched'
   db.session.commit()
 
   print('match hangout:', h.id)
@@ -301,9 +303,9 @@ def accept():
   if request.json == None or not all([x in request.json for x in ['hid']]):
     return jsonify({'error': 'missing info'})
 
-  uid=session['user_id']
-  hid=request.json['hid']
-  h=Hangout.query.filter_by(id = hid).first()
+  uid = session['user_id']
+  hid = request.json['hid']
+  h = Hangout.query.filter_by(id=hid).first()
 
   if h == None:
     return jsonify({'error': 'no hangout found'})
@@ -311,7 +313,7 @@ def accept():
   if h.status != 'matched' or h.author_id != uid:
     return jsonify({'error': 'this hangout cannot be accepted'})
 
-  h.status='finalized'
+  h.status = 'finalized'
   db.session.commit()
   print('accept hangout:', h.id)
   return jsonify({'status': 'accept succeed'})
@@ -327,9 +329,9 @@ def decline():
   if request.json == None or not all([x in request.json for x in ['hid']]):
     return jsonify({'error': 'missing info'})
 
-  uid=session['user_id']
-  hid=request.json['hid']
-  h=Hangout.query.filter_by(id = hid).first()
+  uid = session['user_id']
+  hid = request.json['hid']
+  h = Hangout.query.filter_by(id=hid).first()
 
   if h == None:
     return jsonify({'error': 'no hangout found'})
@@ -338,7 +340,7 @@ def decline():
     return jsonify({'error': 'this hangout cannot be declined'})
 
   # put the hangout back into available stage
-  h.status='available'
+  h.status = 'available'
   db.session.commit()
   print('decline hangout:', h.id)
   return jsonify({'status': 'decline succeed'})

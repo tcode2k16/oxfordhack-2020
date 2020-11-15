@@ -1,9 +1,9 @@
 <template>
   <div class="card-root" :style="'flex-direction: '+slotDirection+';'">
     <div class="text">
-      <p class="bold" style="margin-bottom: 0">{{ title }}</p>
-      <p style="margin-top: 0">{{ subtitle }}</p>
-      <p class="bold">{{ content }}</p>
+      <p v-if="title" class="bold" style="margin-bottom: 0">{{ title }}</p>
+      <p v-if="subtitle" style="margin-top: 0">{{ subtitle }}</p>
+      <p v-if="content" class="bold">{{ content }}</p>
     </div>
     <slot></slot>
   </div>
