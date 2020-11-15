@@ -1,6 +1,6 @@
 <template>
   <div class="card-root" :style="'flex-direction: '+slotDirection+';'">
-    <div>
+    <div class="text">
       <p class="bold" style="margin-bottom: 0">{{ title }}</p>
       <p style="margin-top: 0">{{ subtitle }}</p>
       <p class="bold">{{ content }}</p>
@@ -28,6 +28,13 @@ export default {
   height: min-content;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .bold {
