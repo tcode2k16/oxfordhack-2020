@@ -1,6 +1,13 @@
 <template>
   <div class="root">
     <page-title>Upcoming Hangouts</page-title>
+    <button class="btn" @click="openModal">Open Modal</button>
+    <div
+      class="modal-overlay"
+      v-if="modalOpen"
+      @close="closeModal"
+    ></div>
+    <modal v-if="modalOpen" @close="closeModal"></modal>
     <div id="first">
       <div id="cards">
         <card
@@ -50,18 +57,29 @@ import PageTitle from "../components/PageTitle";
 import Card from "../components/Card";
 import PageButton from "../components/PageButton";
 import moment from "moment";
+import Modal from "../components/HangoutDetailsModal";
 export default {
   name: "Hangouts",
   components: {
     "page-title": PageTitle,
     card: Card,
     "page-button": PageButton,
+    Modal,
   },
   data() {
     return {
       upcoming: [],
       past: [],
+      modalOpen: false,
     };
+  },
+  methods: {
+    openModal() {
+      this.modalOpen = true;
+    },
+    closeModal() {
+      this.modalOpen = false;
+    }
   },
   async mounted() {
     let hangouts = [];
@@ -102,6 +120,17 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   max-width: 1000px;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 98;
+  background-color: #ffffff;
+  opacity: 50%;
 }
 
 #cards {

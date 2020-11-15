@@ -20,19 +20,8 @@ export default {
   },
   data () {
     return {
-      value: "All Colleges",
-      selected:"All Colleges",
-      options: ["All Colleges", "Balliol College","Brasenose College", 
-      "Christ Church","Corpus Christi College", "Exeter College", 
-      "Harris Manchester College", "Hertford College", "Jesus College",
-      "Keble College", "Lady Margaret Hall", "Lincoln College",
-      "Magdalen College","Mansfield College","Merton College",
-      "New College","Oriel College","Pembroke College", "The Queen's College",
-      "Regent's Park College","St Anne's College","St Benet's Hall", 
-      "St Catherine's College","St Edmund Hall","St Hilda's College",
-      "St Hugh's College","St John's College","St Peter's College","Somerville College",
-      "Trinity College","University College", "Wadham College", "Worcester College",
-      "Wycliffe Hall"]
+      value: "",
+      options: true
     }
   }
 }

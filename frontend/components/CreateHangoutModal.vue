@@ -7,16 +7,16 @@
         </div>
         <label for="fname">Location</label>
         <div id="gender-btns">
-          <input type="radio" id="anywhere" name="location" value="anywhere" />
+          <input v-model="location" type="radio" id="anywhere" name="location" value="anywhere" />
           <label for="anywhere">Anywhere</label>
-          <br />
-          <input type="radio" id="christ" name="location" value="christ" />
+       
+          <input v-model="location" type="radio" id="christ" name="location" value="christ" />
           <label for="christ">Christ Church Meadow</label>
-          <br />
-          <input type="radio" id="university" name="location" value="university" />
+      
+          <input v-model="location" type="radio" id="university" name="location" value="university" />
           <label for="university">University Parks</label>
-          <br />
-          <input type="radio" id="port" name="location" value="port" />
+     
+          <input v-model="location" type="radio" id="port" name="location" value="port" />
           <label for="port">Port Meadow</label>
         </div>
         <br />
@@ -24,49 +24,51 @@
           <div>
             <label for="fname">Activity</label>
             <div id="gender-btns">
-              <input type="radio" id="anything" name="activity" value="anything" />
+              <input v-model="activity" type="radio" id="anything" name="activity" value="anything" />
               <label for="anything">Anything</label>
-              <input type="radio" id="walk" name="activity" value="walk" />
+              <input v-model="activity" type="radio" id="walk" name="activity" value="walk" />
               <label for="walk">Walk</label>
-              <input type="radio" id="run" name="activity" value="run" />
+              <input v-model="activity" type="radio" id="run" name="activity" value="run" />
               <label for="run">Run</label>
-              <input type="radio" id="bike" name="activity" value="bike" />
+              <input v-model="activity" type="radio" id="bike" name="activity" value="bike" />
               <label for="bike">Bike</label>
-              <input type="radio" id="sit" name="activity" value="sit" />
+              <input v-model="activity" type="radio" id="sit" name="activity" value="sit" />
               <label for="sit">Sit</label>
             </div>
             <label for="dateTime">Date and time</label>
-            <input type="text" id="dateTime" name="dateTime" />
+            <input type="text" id="dateTime" name="dateTime" v-model="time" />
             <label for="additional">Additional info</label>
-            <input type="text" id="additional" name="additional" />
+            <input type="text" id="additional" name="additional"/>
           </div>
           <div>
             <label for="filter">I'd like to meet people from...</label>
-            <multiselect v-model="value" :options="options" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Any college"></multiselect>
+            <multiselect v-model="collegeValue" :options="collegeOptions" :searchable="true" :close-on-select="false" :show-labels="false" placeholder="All colleges"></multiselect>
+            <div class="row">
+              <div id="gender-btns">
+                <input v-model="cond_year" type="radio" id="undergrad" name="year" value="undergrad" />
+                <label for="undergrad">Undergrad</label>
+                <input v-model="cond_year" type="radio" id="masters" name="year" value="masters" />
+                <label for="masters">Masters</label>
+                <input v-model="cond_year" type="radio" id="phd" name="year" value="phd" />
+                <label for="phd">PhD</label>
+              </div>
+              <multiselect v-model="yearValue" :options="yearOptions" :searchable="true" :close-on-select="false" :show-labels="false" placeholder="All years"></multiselect>
+            </div>
+            <multiselect v-model="departmentValue" :options="departmentOptions" :searchable="true" :close-on-select="false" :show-labels="false" placeholder="All departments"></multiselect>
             <div id="gender-btns">
-              <input type="radio" id="anyone" name="gender" value="anyone" />
+              <input v-model="cond_gender" type="radio" id="anyone" name="gender" value="anyone" />
               <label for="anyone">Anyone</label>
-              <input type="radio" id="male" name="gender" value="male" />
+              <input v-model="cond_gender" type="radio" id="male" name="gender" value="male" />
               <label for="male">Men</label>
-              <input type="radio" id="female" name="gender" value="female" />
+              <input v-model="cond_gender" type="radio" id="female" name="gender" value="female" />
               <label for="female">Women</label>
-              <input type="radio" id="nonbinary" name="gender" value="nonbinary" />
+              <input v-model="cond_gender" type="radio" id="nonbinary" name="gender" value="nonbinary" />
               <label for="nonbinary">Nonbinary</label>
             </div>
-            <div id="gender-btns">
-              <input type="radio" id="undergrad" name="year" value="undergrad" />
-              <label for="undergrad">Undergrad</label>
-              <input type="radio" id="masters" name="year" value="masters" />
-              <label for="masters">Masters</label>
-              <input type="radio" id="phd" name="year" value="phd" />
-              <label for="phd">PhD</label>
-            </div>
-            <input type="text" id="filters" name="filters" value="Any class year"/>
-            <input type="text" id="filters" name="filters" value="Any department"/>
           </div>
         </div>
         <div id="buttons">
-          <button @click="close">Create hangout</button>
+          <button @click="createHangout();close();">Create hangout</button>
         </div>
       </div>
     </div>
@@ -74,12 +76,29 @@
 </template>
     
 <script>
+import Axios from "axios";
 import PageTitle from "../components/PageTitle";
 import Multiselect from 'vue-multiselect'
 export default {
   name: "Modal",
   methods: {
-    close(event) {
+  async createHangout() {
+    let r = await Axios.post("/auth/publish", {
+      time: "time",
+      location: this.location,
+      activity: this.activity,
+      cond_name: "cond",
+      cond_college: collegeValue,
+      cond_department: departmentValue,
+      cond_gender: "gend",
+      cond_year: yearValue
+    });
+    if (!r.data.error) {
+        this.notiOpen = true;
+      }
+    console.log(r.data);
+  },
+  close(event) {
       this.$emit("close");
     }
   },
@@ -95,9 +114,17 @@ export default {
   },
   data () {
     return {
-      value: "All College",
-      selected: "All College",
-      options: ["All College", "Balliol College","Brasenose College", 
+      time: "time",
+      location: undefined,
+      activity: undefined,
+      cond_name: undefined,
+      cond_college: undefined,
+      cond_department: undefined,
+      cond_gender: undefined,
+      cond_year: undefined,
+
+      collegeValue: "All College",
+      collegeOptions: ["All College", "Balliol College","Brasenose College", 
       "Christ Church","Corpus Christi College", "Exeter College", 
       "Harris Manchester College", "Hertford College", "Jesus College",
       "Keble College", "Lady Margaret Hall", "Lincoln College",
@@ -107,11 +134,25 @@ export default {
       "St Catherine's College","St Edmund Hall","St Hilda's College",
       "St Hugh's College","St John's College","St Peter's College","Somerville College",
       "Trinity College","University College", "Wadham College", "Worcester College",
-      "Wycliffe Hall"]
-    }
+      "Wycliffe Hall"],
+      yearValue: "All years",
+      yearOptions: ["All years", "1st year", "2nd year", "3rd year","4th year & up"],
+      departmentValue: "All departments",
+      departmentOptions: ["American Institute","Art","Classics","English Language and Literature","History","History of Art",
+        "Linguistics, Philology & Phonetics","Medieval and Modern Languages","Music","Oriental Studies","Philosophy","Theology and Religion","Chemistry","Computer Science","e-Research Centre","Earth Sciences","Engineering Science",
+        "Life Sciences Interface Doctoral Training Centre","Materials","Mathematics","Physics", "Plant Sciences", 
+        "Statistics", "Zoology", "Biochemistry", "Clinical Medicine","Clinical Neurosciences",
+        "Experimental Psychology","Medicine","Oncology", "Orthopaedics, Rheumatology and Musculoskeletal Sciences","Paediatrics", 
+        "Pathology","Pharmacology", "Physiology, Anatomy & Genetics", "Population Health", "Primary Care Health Sciences", "Psychiatry", "Surgical Sciences", 
+        "Women's & Reproductive Health", "Anthropology and Museum Ethnography", "Archaeology", "Business","Economics", 
+        "Education", "Geography and the Environment", "Global and Area Studies", "Government", "International Development", "Internet Institute","Law","Oxford Martin School","Politics and International Relations", 
+        "Social Policy and Intervention", "Sociology", "Continuing Education"]
+            }
   },
   mounted() {
-    this.value = "Any College";
+    this.collegeValue = "Any College";
+    this.yearValue = "All year";
+    this.departmentValue = "All departments";
   }
 };
 </script>
