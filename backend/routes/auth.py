@@ -336,8 +336,7 @@ def decline():
     if h.status != 'matched' or h.author_id != uid:
         return jsonify({'error': 'this hangout cannot be declined'})
 
-    # put the hangout back into available stage
-    h.status = 'available'
+    h.status = 'finished'
     db.session.commit()
     print(uid, ' decline hangout:', h.id)
     return jsonify({'status': 'decline succeed'})

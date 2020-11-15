@@ -61,7 +61,7 @@ def user_login (uid):
 def user_logout():
   print (session.get(url+'auth/logout').text)
 
-loc = ["Chrest Church Meadow", "Univ Park"]
+loc = ["Christ Church Meadow", "Univ Park"]
 act = ["walk", "run", "swim"]
 def publish_hangout (uid, if_requirement = False):
   if if_requirement:
