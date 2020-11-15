@@ -2,7 +2,7 @@
   <div class="root">
     <h1>Hello, Alan! It's a good day to make a new friend :)</h1>
     <button class="btn" @click="openModal">Open Modal</button>
-    <modal v-model="modalOpen"></modal>
+    <modal v-if="modalOpen"></modal>
     <page-title>Waiting for a friend for your hangouts...</page-title>
     <div id="first">
       <div id="cards">
