@@ -67,7 +67,7 @@ departments = ["American Institute",
 "Sociology", 
 "Continuing Education"]
 genders = ["male", "male", "male", "male", "male", "female", "female", "female", "female", "female", "non-binary", "prefer not to disclose"]
-pronouns = ["not implemented"]
+pronouns = ["he/him", "she/her", "they/them"]
 
 
 u_number = 25
@@ -102,6 +102,7 @@ def generate_users (u_number):
         'password': u_password[i],
     })
     print(result.text)
+    # print(":", result.json()["email"],  result.json()["password"])
     u_ids.append(result.json()["user_id"])
     user_logout()
 
