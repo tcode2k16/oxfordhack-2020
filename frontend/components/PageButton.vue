@@ -1,15 +1,19 @@
 <template>
-  <button><slot></slot></button>
+  <button @click="onclick"><slot></slot></button>
 </template>
 
 <script>
 export default {
   name: "PageButton",
+  methods: {
+    onclick(e) {
+      this.$emit("click", e);
+    },
+  },
 };
 </script>
 
 <style scoped>
-
 button {
   margin-left: 20px;
   background-color: #428FEA;

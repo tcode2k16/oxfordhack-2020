@@ -50,7 +50,7 @@
 
         <div id="buttons">
           <img src="/img/human2.svg" alt="" />
-          <page-button>Log out</page-button>
+          <page-button @click="logout">Log out</page-button>
           <page-button>Update</page-button>
         </div>
       </div>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import Axios from "axios";
 import PageTitle from "../components/PageTitle";
 import PageButton from "../components/PageButton";
 export default {
@@ -66,6 +67,12 @@ export default {
   components: {
     "page-title": PageTitle,
     "page-button": PageButton,
+  },
+  methods: {
+    async logout() {
+      await Axios.get("/auth/logout");
+      this.$router.push('/login');
+    },
   },
 };
 </script>
@@ -132,7 +139,6 @@ input {
   width: 100%;
   max-width: 370px;
 }
-
 
 #gender-btns {
   display: flex;
