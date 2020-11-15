@@ -42,7 +42,7 @@
           </div>
           <div>
             <label for="filter">I'd like to meet people from...</label>
-            <multiselect v-model="collegeValue" :options="collegeOptions" :searchable="true" :close-on-select="false" :show-labels="false" placeholder="All colleges"></multiselect>
+            <multiselect v-model="collegeValue" :options="collegeOptions" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="All colleges"></multiselect>
             <div class="row">
               <div id="gender-btns">
                 <input v-model="cond_year" type="radio" id="undergrad" name="year" value="undergrad" />
@@ -52,9 +52,9 @@
                 <input v-model="cond_year" type="radio" id="phd" name="year" value="phd" />
                 <label for="phd">PhD</label>
               </div>
-              <multiselect v-model="yearValue" :options="yearOptions" :searchable="true" :close-on-select="false" :show-labels="false" placeholder="All years"></multiselect>
+              <multiselect v-model="yearValue" :options="yearOptions" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="All years"></multiselect>
             </div>
-            <multiselect v-model="departmentValue" :options="departmentOptions" :searchable="true" :close-on-select="false" :show-labels="false" placeholder="All departments"></multiselect>
+            <multiselect v-model="departmentValue" :options="departmentOptions" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="All departments"></multiselect>
             <div id="gender-btns">
               <input v-model="cond_gender" type="radio" id="anyone" name="gender" value="anyone" />
               <label for="anyone">Anyone</label>
@@ -68,7 +68,7 @@
           </div>
         </div>
         <div id="buttons">
-          <button @click="createHangout();close();">Create hangout</button>
+          <button @click="createHangout();close();">Createee hangout</button>
         </div>
       </div>
     </div>
@@ -85,17 +85,17 @@ export default {
   async createHangout() {
     let r = await Axios.post("/auth/publish", {
       time: "time",
-      location: this.location,
-      activity: this.activity,
+      location: "s",
+      activity: "s",
       cond_name: "cond",
-      cond_college: collegeValue,
-      cond_department: departmentValue,
-      cond_gender: "gend",
-      cond_year: yearValue
+      cond_college: "c",
+      cond_department: "d",
+      cond_gender: "s",
+      cond_year: "y"
     });
-    if (!r.data.error) {
-        this.notiOpen = true;
-      }
+    // if (!r.data.error) {
+    //     this.notiOpen = true;
+    //   }
     console.log(r.data);
   },
   close(event) {
@@ -138,7 +138,7 @@ export default {
       yearValue: "All years",
       yearOptions: ["All years", "1st year", "2nd year", "3rd year","4th year & up"],
       departmentValue: "All departments",
-      departmentOptions: ["American Institute","Art","Classics","English Language and Literature","History","History of Art",
+      departmentOptions: ["All departments","American Institute","Art","Classics","English Language and Literature","History","History of Art",
         "Linguistics, Philology & Phonetics","Medieval and Modern Languages","Music","Oriental Studies","Philosophy","Theology and Religion","Chemistry","Computer Science","e-Research Centre","Earth Sciences","Engineering Science",
         "Life Sciences Interface Doctoral Training Centre","Materials","Mathematics","Physics", "Plant Sciences", 
         "Statistics", "Zoology", "Biochemistry", "Clinical Medicine","Clinical Neurosciences",
@@ -150,9 +150,9 @@ export default {
             }
   },
   mounted() {
-    this.collegeValue = "Any College";
-    this.yearValue = "All year";
-    this.departmentValue = "All departments";
+    // this.collegeValue = "Any College";
+    // this.yearValue = "All year";
+    // this.departmentValue = "All departments";
   }
 };
 </script>

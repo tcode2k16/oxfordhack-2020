@@ -4,8 +4,8 @@
       Hello, Alan! <br />
       It's a good day to make a new friend :)
     </h1>
-    <button class="btn" @click="openModal">Open Modal</button>
-    <div class="modal-overlay" v-if="modalOpen" @click="closeModal"></div>
+    <!-- <button class="btn" @click="openModal">Open Modal</button> -->
+    <div class="modal-overlay" v-if="modalOpen" @close="closeModal"></div>
     <modal v-if="modalOpen" @close="closeModal"></modal>
     <page-title>Waiting for a match for your hangouts...</page-title>
     <div id="first">

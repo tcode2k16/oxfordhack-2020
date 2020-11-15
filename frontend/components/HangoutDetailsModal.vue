@@ -4,26 +4,32 @@
       <div>
         <div class="center">
             <page-title >Details about Alan's Hangout</page-title>
-        </div>
-        <div id="info">
             <div> 
-                <p>Walk around University Parks <br> at 12 pm on November 14th</p>
+                <label>Walk around University Parks <br> at 12 pm on November 14th</label>
             </div>
             <div class="contact">
                 <label>
-                    Alan
+                    Alan's info
                 </label>
                 <p>
                     He/him pronouns <br>
                     Male <br>
                     Computer Science student at St. John’s <br>
-                    Graduating in 2022 <br>
-                    Enjoys reading/biking <br>
+                    Undergrad 1st year student <br>
+                    Enjoys reading/biking 
                 </p>
+                <div class="row">
+                    <img class= "icon" src="/img/email.svg" alt="" />
+                    <p> alan@st-johns.ox.ac.uk</p>
+                </div>
+                <div class="row">
+                    <img class= "icon" src="/img/phone.svg" alt="" />
+                    <p>7777777</p>
+                </div>
             </div>
-        </div>
-        <div id="cancel-buttons">
-          <button @click="close">Cancel hangout</button>
+            <div id="cancel-buttons" class="center">
+            <button @click="close">Cancel hangout</button>
+            </div>
         </div>
       </div>
     </div>
@@ -64,6 +70,7 @@ export default {
   max-width: 1100px;
   border-radius: 5px;
   padding: 40px;
+  background-color: #F8F8F8;
   border: 3px solid #428fea;
   z-index: 99;
 }
@@ -75,6 +82,17 @@ export default {
     font-weight: normal;
 }
 
+.icon {
+    margin-right: 10px;
+    margin-left: 20%;
+}
+
+.row {
+  display: flex;
+  width: 100%; 
+  height: 100%;
+}
+
 .contact {
     background: #e9f0f8;
     border: 1px solid #428fea;
@@ -82,11 +100,12 @@ export default {
     border-radius: 5px;
     padding: 10px 20px;
     align-items: left;
-    max-width: 400px;
+    margin-top: 20px;
+    margin-bottom: 20px; 
 }
 
 #buttons {
-  margin-top: 20px;
+  margin-top: 60px;
   display: flex;
   justify-content: flex-end;
   width: 100%;
@@ -112,55 +131,6 @@ export default {
 }
 
 
-#info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 70px;
-  max-width: 1000px;
-}
-
-#info > div {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  align-items: flex-start;
-  white-space: nowrap;
-
-  /* margin: 10px; */
-  /* column-gap: 10px; */
-}
-
-.selected {
-  background-color: #428fea !important;
-  color: #ffffff;
-}
-
-input[type="radio"] {
-  display: none;
-}
-input[type="radio"] + label {
-  user-select: none;
-  background: #eeeeee;
-  border-radius: 5px;
-  outline: none;
-  border: none;
-  /* height: 44px; */
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
-  /* padding: 5px; */
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-right: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-input[type="radio"]:checked + label {
-  background-color: #428fea !important;
-  color: #ffffff;
-}
 
 label {
   font-family: Roboto;
