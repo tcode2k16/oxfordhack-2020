@@ -10,7 +10,62 @@ session = requests.session()
 # os.system('rm ./db.sqlite')
 
 colleges = ["Christ Church", "Exeter", "Magdalen", "St John's", "Jesus", "Wadham", "Univ", "Trinity", "Balliol"]
-departments = ["CS", "Maths", "Philosophy", "Engineering", "History", "PPE", "German", "Spanish", "Literature", "Politics"]
+departments = ["American Institute",
+"Art",
+"Classics",
+"English Language and Literature",
+"History",
+"History of Art",
+"Linguistics, Philology & Phonetics",
+"Medieval and Modern Languages",
+"Music",
+"Oriental Studies",
+"Philosophy",
+"Theology and Religion",
+"Chemistry",
+"Computer Science",
+"e-Research Centre",
+"Earth Sciences",
+"Engineering Science",
+"Life Sciences Interface Doctoral Training Centre",
+"Materials",
+"Mathematics",
+"Physics", 
+"Plant Sciences", 
+"Statistics", 
+"Zoology", 
+"Biochemistry", 
+"Clinical Medicine",
+"Clinical Neurosciences",
+"Experimental Psychology", 
+"Medicine",
+"Oncology", 
+"Orthopaedics, Rheumatology and Musculoskeletal Sciences",
+"Paediatrics", 
+"Pathology",
+"Pharmacology", 
+"Physiology, Anatomy & Genetics", 
+"Population Health", 
+"Primary Care Health Sciences", 
+"Psychiatry", 
+"Surgical Sciences", 
+"Women's & Reproductive Health", 
+"Anthropology and Museum Ethnography", 
+"Archaeology", 
+"Business",
+"Economics", 
+"Education", 
+"Geography and the Environment", 
+"Global and Area Studies", 
+"Government", 
+"International Development", 
+"Internet Institute",
+"Law",
+"Oxford Martin School",
+"Politics and International Relations", 
+"Social Policy and Intervention", 
+"Sociology", 
+"Continuing Education"]
 genders = ["male", "male", "male", "male", "male", "female", "female", "female", "female", "female", "non-binary", "prefer not to disclose"]
 pronouns = ["not implemented"]
 
@@ -61,8 +116,8 @@ def user_login (uid):
 def user_logout():
   print (session.get(url+'auth/logout').text)
 
-loc = ["Christ Church Meadow", "Univ Park"]
-act = ["walk", "run", "swim"]
+loc = ["Christ Church Meadow", "University Park", "Boatyard"]
+act = ["walk", "run", "dog walking", "dove feeding"]
 def publish_hangout (uid, if_requirement = False):
   if if_requirement:
     print (session.post(url+'auth/publish', json={
@@ -77,7 +132,7 @@ def publish_hangout (uid, if_requirement = False):
     }).text)
   else:
     print (session.post(url+'auth/publish', json={
-        'time': random.choice(["2020-11-08 09", "2020-11-16 09", "2020-11-20 17", "2020-11-10 10"]),
+        'time': random.choice(["2020-11-08 09", "2020-11-08 11", "2020-11-16 09", "2020-11-20 17", "2020-11-17 11", "2020-11-13 11", "2020-11-14 04", "2020-11-08 10"]),
         'location': random.choice(loc),
         'activity': random.choice(act),
         'cond_name': "*",
