@@ -2,11 +2,7 @@
   <div class="root">
     <page-title>Upcoming Hangouts</page-title>
     <button class="btn" @click="openModal">Open Modal</button>
-    <div
-      class="modal-overlay"
-      v-if="modalOpen"
-      @close="closeModal"
-    ></div>
+    <div class="modal-overlay" v-if="modalOpen" @click="closeModal"></div>
     <modal v-if="modalOpen" @close="closeModal"></modal>
     <div id="first">
       <div id="cards">
