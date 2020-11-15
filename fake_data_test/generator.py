@@ -68,7 +68,7 @@ departments = ["American Institute",
 "Continuing Education"]
 genders = ["male", "male", "male", "male", "male", "female", "female", "female", "female", "female", "non-binary", "prefer not to disclose"]
 pronouns = ["he/him", "she/her", "they/them"]
-
+hobbies = ["football", "tennis", "basketball", "swimming", "chess", "eating", "swimming", "cooking", "CS", "programming", "coding", "gamming" ]
 
 u_number = 25
 publish_number = 40
@@ -98,7 +98,7 @@ def generate_users (u_number):
         'phone_number': u_phone[i],
         'gender': u_gender[i],
         'pronouns': u_pronoun[i],
-        'description': 'This person is lazy',
+        'description': 'I like ' + random.choice(hobbies),
         'password': u_password[i],
     })
     print(result.text)
@@ -196,3 +196,4 @@ for i in range(accept_number  ):
   cand = get_cands()
   if len(cand) > 0:
     accept(random.choice(cand)['hangout_id'])
+  user_logout()
