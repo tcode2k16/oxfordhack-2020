@@ -15,7 +15,11 @@ genders = ["male", "male", "male", "male", "male", "female", "female", "female",
 pronouns = ["not implemented"]
 
 
-u_number = 3
+u_number = 5
+publish_number = 5
+match_number = 5
+accept_number = 2
+
 u_ids = []
 u_names = [names.get_full_name() for i in range(u_number)]
 u_college = [random.choice(colleges) for i in range(u_number)]
@@ -61,7 +65,7 @@ def user_logout():
 
 loc = ["Chrest Church Meadow", "Univ Park"]
 act = ["walk", "run", "swim"]
-def creat_hangout (uid, if_requirement = False):
+def publish_hangout (uid, if_requirement = False):
   if if_requirement:
     print (session.post(url+'auth/publish', json={
           'time': "2020-11-15 11 p.m.",
@@ -87,7 +91,6 @@ def creat_hangout (uid, if_requirement = False):
 
 def get_feeds ():
   results = session.post(url+'auth/my_feed', json = {})
-  # print(results)
   result_data = results.json()
   return results.json()["feeds"]
 
@@ -96,16 +99,32 @@ def match (hid):
         'hid': hid
         }).text)
 
+
+def get_cands ():
+  results = session.post(url+'auth/my_hangouts', json = {
+            'hangout_type': 'matched'
+            })
+  result_data = results.json()
+  return results.json()['hangouts']
+
+def accept (hid):
+  print(session.post(url+'auth/accept', json = {
+        'hid': hid
+        }).text)
+
+
+
 generate_users (u_number)
 
-for i in range(10):
+print("begin publishing")
+for i in range(publish_number):
   uid = random.randint(0, u_number - 1)
   user_login(uid)
-  creat_hangout (random.randint(0, u_number - 1))
+  publish_hangout (random.randint(0, u_number - 1))
   user_logout()
 
 print("begin matching")
-for i in range(10):
+for i in range(match_number):
   uid = random.randint(0, u_number - 1)
   user_login(uid)
   feeds = get_feeds()
@@ -116,40 +135,9 @@ for i in range(10):
   # print("id::", random.choice(feeds)['hangout_id'])
   user_logout()
 
-# for i in range(1):
-#   uid = random.choice(0, u_number - 1)
-#   cand = get_cands(uid)
-#   user_login(uid)
-#   accept(random.choice(feeds))
-#   user_logout()
-
-
-
-
-
-
-
-# print session.get(url+'auth/user_info').text
-
-# for i in range(20):
-#   print session.post(url+'auth/publish', json={
-#       'time': 'today',
-#       'location': 'uni park',
-#       'activity': 'walking',
-#       'cond_name': '*',
-#       'cond_college': '*',
-#       'cond_department': '*',
-#       'cond_gender': '*',
-#       'cond_year': 0,
-#   }).text
-
-# print session.post(url+'auth/publish', json={
-#     'time': 'tmr',
-#     'location': 'Christ Church Meadow',
-#     'activity': 'running',
-#     'cond_name': '12345',
-#     'cond_college': '*',
-#     'cond_department': '*',
-#     'cond_gender': '*',
-#     'cond_year': 0,
-# }).text
+print("begin choosing")
+for i in range(accept_number  ):
+  uid = random.randint(0, u_number - 1)
+  user_login(uid)
+  cand = get_cands()
+  accept(random.choice(cand)['hangout_id'])
