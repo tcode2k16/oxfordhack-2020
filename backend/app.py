@@ -36,7 +36,7 @@ class Hangout(db.Model):
 
   #users
   author_id = db.Column(db.Integer, nullable=False)
-  accepter_id = db.Column(db.Integer, nullable=True)
+  participant_id = db.Column(db.Integer, nullable=True)
 
 
 # IMPORTANT: SINGLE CHOICE

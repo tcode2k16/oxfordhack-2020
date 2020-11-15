@@ -227,7 +227,7 @@ def my_feed():
                 'description': u.description,
             },
         })
-
+  print(type(feeds))
   return jsonify({'feeds': feeds})
 
 
@@ -283,7 +283,7 @@ def take():
     return jsonify({'error': 'hangout not available'})
 
   # WILL THIS CHANGE THE DATABASE?
-  h.accepter_id=uid
+  h.participant_id=uid
   h.status='matched'
   db.session.commit()
 
