@@ -35,8 +35,8 @@ class Hangout(db.Model):
   status = db.Column(db.String(500), nullable=False) #available, matched, finalized, finished
 
   #users
-  author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-  participant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+  author_id = db.Column(db.Integer, nullable=False)
+  accepter_id = db.Column(db.Integer, nullable=True)
 
 
 # IMPORTANT: SINGLE CHOICE

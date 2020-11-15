@@ -44,7 +44,9 @@ def register():
 
   session['user_id'] = u.id
 
-  return jsonify({'status': 'success'})
+  print("t1 ", ('user_id' in session))
+
+  return jsonify({'status': 'register success', 'user_id': u.id})
 
 # User Login
 
@@ -88,7 +90,7 @@ def update():
   user.pronouns = request.json['pronouns']
   user.description = request.json['description']
   db.session.commit()
-  return jsonify({'status': 'success'})
+  return jsonify({'status': 'update success'})
 
 
 # User Login
@@ -111,13 +113,15 @@ def login():
     return jsonify({'error': 'wrong password'})
 
   session['user_id'] = user.id
-  return jsonify({'status': 'success'})
+  print("t2 ", ('user_id' in session))
+  
+  return jsonify({'status': 'login success', 'uid': user.id})
 
 
-@app.route('/auth/logout')
+@app.route('/auth/logout', methods=['POST'])
 def logout():
   session.pop('user_id', None)
-  return jsonify({'status': 'success'})
+  return jsonify({'status': 'logout success'})
 
 
 # get all (available/matched/finalized/finished) hangouts I posted
@@ -171,7 +175,7 @@ def my_hangouts():
 # get all available hangouts that fit me
 
 
-@app.route('/auth/my_feed')
+@app.route('/auth/my_feed', methods=['POST'])
 def my_feed():
   if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
@@ -230,6 +234,8 @@ def my_feed():
 # 1. publish hangout
 @ app.route('/auth/publish', methods = ['POST'])
 def publish():
+  print("t3 ", ('user_id' in session))
+  # print("pre-publishing check", ('user_id' in session))
   if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
 
@@ -248,13 +254,12 @@ def publish():
       cond_year = request.json['cond_year'],
       status = 'available',
       author_id = uid,
-      participant_id = 0
   )
   db.session.add(h)
   db.session.commit()
 
   print('create hangout:', h.id)
-  return jsonify({'status': 'succeed'})
+  return jsonify({'status': 'publish succeed'})
 
 # 2. take a hangout
 
@@ -278,12 +283,12 @@ def take():
     return jsonify({'error': 'hangout not available'})
 
   # WILL THIS CHANGE THE DATABASE?
-  h.participant_id=uid
+  h.accepter_id=uid
   h.status='matched'
   db.session.commit()
 
   print('match hangout:', h.id)
-  return jsonify({'status': 'succeed'})
+  return jsonify({'status': 'take succeed'})
 
 # 3.1 the author accepts a matched handout
 
@@ -309,7 +314,7 @@ def accept():
   h.status='finalized'
   db.session.commit()
   print('accept hangout:', h.id)
-  return jsonify({'status': 'succeed'})
+  return jsonify({'status': 'accept succeed'})
 
 # 3.2 the author declines a matched handout
 
@@ -336,7 +341,7 @@ def decline():
   h.status='available'
   db.session.commit()
   print('decline hangout:', h.id)
-  return jsonify({'status': 'succeed'})
+  return jsonify({'status': 'decline succeed'})
 
 # 4 refresh the whole hangout database by a time, changing some 'finalized' to 'finished'
 # @app.route('/auth/finish')
