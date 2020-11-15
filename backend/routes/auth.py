@@ -154,19 +154,21 @@ def my_hangouts():
             'author_id': h.author_id,
             'participant_id': h.participant_id,
         }
-        if u != None:
-            o['peer'] = {
-                'id': u.id,
-                'name': u.name,
-                'college': u.college,
-                'department': u.department,
-                'email': u.email,
-                'year': u.year,
-                'phone_number': u.phone_number,
-                'gender': u.gender,
-                'pronouns': u.pronouns,
-                'description': u.description,
-            }
+        if u == None:
+          u = User.query.filter_by(id=session['user_id']).first()
+        o['peer'] = {
+            'id': u.id,
+            'name': u.name,
+            'college': u.college,
+            'department': u.department,
+            'email': u.email,
+            'year': u.year,
+            'phone_number': u.phone_number,
+            'gender': u.gender,
+            'pronouns': u.pronouns,
+            'description': u.description,
+        }
+        
         output.append(o)
     return jsonify({'hangouts': output})
 

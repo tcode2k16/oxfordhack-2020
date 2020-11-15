@@ -12,6 +12,13 @@
     <transition name="fade">
       <modal v-if="modalOpen" @close="closeModal" @success="showNoti"></modal>
     </transition>
+
+    <transition name="fade">
+      <div class="modal-overlay" v-if="modalOpen2" @click="closeModal2"></div>
+    </transition>
+    <transition name="fade">
+      <detailmodal v-if="modalOpen2" @close="closeModal2" :hangout="selectedHangout"></detailmodal>
+    </transition>
     <page-title>Waiting for a match for your hangouts...</page-title>
     <div id="first">
       <div id="grid">
@@ -21,6 +28,7 @@
           slotDirection="row"
           title=""
           subtitle=""
+          @click="openModal2(hangout)"
           :content="`${hangout.activity} @ ${hangout.location} ${getRelTime(hangout.time)}`"
         />
 
@@ -44,6 +52,7 @@
               :key="hangout.id"
               slotDirection="row"
               :title="hangout.peer.name"
+              @click="openModal2(hangout)"
               :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
               :content="`${hangout.activity} @ ${hangout.location} ${getRelTime(hangout.time)}`"
             />
@@ -63,6 +72,7 @@ import moment from "moment";
 import Notification from "../components/Notification";
 import PageTitle from "../components/PageTitle";
 import Modal from "../components/CreateHangoutModal";
+import Modal2 from "../components/HangoutDetailsModal";
 import Card from "../components/Card";
 export default {
   name: "Home",
@@ -70,14 +80,17 @@ export default {
     "page-title": PageTitle,
     card: Card,
     Modal,
+    'detailmodal': Modal2,
     'notification': Notification,
   },
   data() {
     return {
       modalOpen: false,
+      modalOpen2: false,
       upcoming: [],
       requests: [],
       notiOpen: false,
+      selectedHangout: {},
     };
   },
   methods: {
@@ -87,6 +100,14 @@ export default {
     closeModal() {
       console.log("close modal");
       this.modalOpen = false;
+    },
+    openModal2(h) {
+      this.modalOpen2 = true;
+      this.selectedHangout = h;
+    },
+    closeModal2() {
+      console.log("close modal");
+      this.modalOpen2 = false;
     },
     showNoti() {
       console.log("show noti");
