@@ -6,8 +6,12 @@
       It's a good day to make a new friend :)
     </h1>
     <!-- <button class="btn" @click="openModal">Open Modal</button> -->
-    <div class="modal-overlay" v-if="modalOpen" @click="closeModal"></div>
-    <modal v-if="modalOpen" @close="closeModal" @success="showNoti"></modal>
+    <transition name="fade">
+      <div class="modal-overlay" v-if="modalOpen" @click="closeModal"></div>
+    </transition>
+    <transition name="fade">
+      <modal v-if="modalOpen" @close="closeModal" @success="showNoti"></modal>
+    </transition>
     <page-title>Waiting for a match for your hangouts...</page-title>
     <div id="first">
       <div id="grid">
@@ -202,6 +206,16 @@ h1 {
 
   color: #000000;
   margin-bottom: 100px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+  /* display: none; */
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+  /* display: none; */
 }
 
 </style>

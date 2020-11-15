@@ -1,12 +1,16 @@
 <template>
   <div class="root">
     <page-title class="pageTitle">Upcoming Hangouts</page-title>
+    <transition name="fade">
     <div class="modal-overlay" v-if="modalOpen" @click="closeModal"></div>
+    </transition>
+    <transition name="fade">
     <modal
       v-if="modalOpen"
       :hangout="selectedHangout"
       @close="closeModal"
     ></modal>
+    </transition>
     <div id="first">
       <div id="cards">
         <card
@@ -157,5 +161,16 @@ export default {
 #second {
   max-width: 1000px;
   margin-bottom: 5vh;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+  /* display: none; */
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+  /* display: none; */
 }
 </style>
