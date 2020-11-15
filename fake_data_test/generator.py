@@ -15,7 +15,7 @@ genders = ["male", "male", "male", "male", "male", "female", "female", "female",
 pronouns = ["not implemented"]
 
 
-u_number = 5
+u_number = 3
 u_ids = []
 u_names = [names.get_full_name() for i in range(u_number)]
 u_college = [random.choice(colleges) for i in range(u_number)]
@@ -87,27 +87,34 @@ def creat_hangout (uid, if_requirement = False):
 
 def get_feeds ():
   results = session.post(url+'auth/my_feed', json = {})
-  print(results)
+  # print(results)
   result_data = results.json()
   return results.json()["feeds"]
 
+def match (hid):
+  print(session.post(url+'auth/take', json = {
+        'hid': hid
+        }).text)
+
 generate_users (u_number)
 
-for i in range(1):
+for i in range(10):
   uid = random.randint(0, u_number - 1)
   user_login(uid)
   creat_hangout (random.randint(0, u_number - 1))
   user_logout()
 
 print("begin matching")
-for i in range(1):
+for i in range(10):
   uid = random.randint(0, u_number - 1)
   user_login(uid)
   feeds = get_feeds()
-  print(feeds)
-  # print(len(feeds))
-  # match(random.choice(feeds))
-  # user_logout()
+  print("user: ", uid, "len: ", len(feeds))
+  if len(feeds) == 0:
+    continue 
+  match(random.choice(feeds)['hangout_id'])
+  # print("id::", random.choice(feeds)['hangout_id'])
+  user_logout()
 
 # for i in range(1):
 #   uid = random.choice(0, u_number - 1)
