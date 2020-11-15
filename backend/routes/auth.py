@@ -44,8 +44,6 @@ def register():
 
   session['user_id'] = u.id
 
-  print("t1 ", ('user_id' in session))
-
   return jsonify({'status': 'register success', 'user_id': u.id})
 
 # User Login
@@ -113,12 +111,11 @@ def login():
     return jsonify({'error': 'wrong password'})
 
   session['user_id'] = user.id
-  print("t2 ", ('user_id' in session))
 
   return jsonify({'status': 'login success', 'uid': user.id})
 
 
-@app.route('/auth/logout')
+@app.route('/auth/logout', methods=['POST'])
 def logout():
   session.pop('user_id', None)
   return jsonify({'status': 'logout success'})
@@ -229,7 +226,6 @@ def my_feed():
                 'description': u.description,
             },
         })
-  print(type(feeds))
   return jsonify({'feeds': feeds})
 
 
@@ -289,13 +285,13 @@ def take():
   h.status = 'matched'
   db.session.commit()
 
-  print('match hangout:', h.id)
+  print(uid, ' take hangout:', h.id)
   return jsonify({'status': 'take succeed'})
 
 # 3.1 the author accepts a matched handout
 
 
-@ app.route('/auth/accept')
+@ app.route('/auth/accept', methods=['POST'])
 def accept():
   if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
@@ -315,13 +311,13 @@ def accept():
 
   h.status = 'finalized'
   db.session.commit()
-  print('accept hangout:', h.id)
+  print(uid, ' accept hangout:', h.id)
   return jsonify({'status': 'accept succeed'})
 
 # 3.2 the author declines a matched handout
 
 
-@ app.route('/auth/decline')
+@ app.route('/auth/decline', methods=['POST'])
 def decline():
   if 'user_id' not in session:
     return jsonify({'error': 'not logged in'})
@@ -342,7 +338,7 @@ def decline():
   # put the hangout back into available stage
   h.status = 'available'
   db.session.commit()
-  print('decline hangout:', h.id)
+  print(uid, ' decline hangout:', h.id)
   return jsonify({'status': 'decline succeed'})
 
 # 4 refresh the whole hangout database by a time, changing some 'finalized' to 'finished'
