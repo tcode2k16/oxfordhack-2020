@@ -2,7 +2,8 @@
   <div class="root">
     <h1>Hello, Alan! It's a good day to make a new friend :)</h1>
     <button class="btn" @click="openModal">Open Modal</button>
-    <modal v-model="modalOpen"></modal>
+    <div class="modal-overlay" v-if="modalOpen" @close="showModal = false"></div>
+    <modal v-if="modalOpen"></modal>
     <page-title>Waiting for a friend for your hangouts...</page-title>
     <div id="first">
       <div id="cards">
@@ -82,6 +83,17 @@ h1 {
   font-style: normal;
   font-weight: bold;
   font-size: 40px;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 98;
+  background-color: #ffffff;
+  opacity: 50%;
 }
 
 #cards {
