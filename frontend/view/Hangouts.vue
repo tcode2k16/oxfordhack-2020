@@ -3,56 +3,88 @@
     <page-title>Upcoming Hangouts</page-title>
     <div id="first">
       <div id="cards">
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/>
+        <card
+          v-for="hangout in upcoming"
+          :key="hangout.id"
+          slotDirection="row"
+          :title="hangout.peer.name"
+          :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
+          :content="`${hangout.activity} ${hangout.location} ${hangout.time}`"
+        />
+        <!-- <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/>
+        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020"/> -->
       </div>
-      
-      <img src="/img/human3.svg" alt="">
+
+      <img src="/img/human3.svg" alt="" />
     </div>
-    <br>
+    <br />
     <page-title>Past Hangouts</page-title>
     <div id="second">
       <div id="cards">
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
+        <card
+          v-for="hangout in past"
+          :key="hangout.id"
+          slotDirection="row"
+          :title="hangout.peer.name"
+          :subtitle="`${hangout.peer.college} ${hangout.peer.department} ${hangout.peer.year}`"
+          :content="`${hangout.activity} ${hangout.location} ${hangout.time}`"
+        >
           <page-button>We met!</page-button>
         </card>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
+        <!-- <card
+          slotDirection="row"
+          title="Alan"
+          subtitle="First-year Computer Science student at St. John’s College"
+          content="Walk around Unversity Parks at 12pm on November 14th, 2020"
+        >
           <page-button>We met!</page-button>
-        </card>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <page-button>We met!</page-button>
-        </card>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <page-button>We met!</page-button>
-        </card>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <page-button>We met!</page-button>
-        </card>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <page-button>We met!</page-button>
-        </card>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <page-button>We met!</page-button>
-        </card>
-        <card slotDirection="row" title="Alan" subtitle="First-year Computer Science student at St. John’s College" content="Walk around Unversity Parks at 12pm on November 14th, 2020">
-          <page-button>We met!</page-button>
-        </card>
+        </card> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Axios from "axios";
 import PageTitle from "../components/PageTitle";
 import Card from "../components/Card";
 import PageButton from "../components/PageButton";
+import moment from "moment";
 export default {
   name: "Hangouts",
   components: {
     "page-title": PageTitle,
-    'card': Card,
-    'page-button': PageButton,
+    card: Card,
+    "page-button": PageButton,
+  },
+  data() {
+    return {
+      upcoming: [],
+      past: [],
+    };
+  },
+  async mounted() {
+    let hangouts = [];
+    let r = await Axios.post("/auth/my_hangouts", {
+      hangout_type: "matched",
+    });
+    hangouts = hangouts.concat(r.data.hangouts);
+
+    r = await Axios.post("/auth/my_hangouts", {
+      hangout_type: "finalized",
+    });
+    hangouts = hangouts.concat(r.data.hangouts);
+
+    console.log(hangouts);
+    for (let each of hangouts) {
+      if (moment(each.time).isBefore(moment())) {
+        this.past.push(each);
+      } else {
+        this.upcoming.push(each);
+      }
+    }
+
+    // console.log(moment('2020-01-01').isBefore(moment()));
   },
 };
 </script>
@@ -75,13 +107,11 @@ export default {
 #cards {
   display: grid;
   row-gap: 15px;
-
+  min-width: 50vw;
 }
 
 #second {
   max-width: 1000px;
   margin-bottom: 5vh;
 }
-
-
 </style>
